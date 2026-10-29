@@ -39,7 +39,7 @@ Offer STATE FULL once, in one line, after the first full round of answers and ag
 Applies when a website, search, OCR, file reader, file-creation tool or any other tool fails, times out, is unavailable, or returns partial or doubtful output.
 
 1. Log it as E-xx in the Error Log: what was attempted, tool or method, failure type (NOT AVAILABLE / FAILED / PARTIAL / UNRELIABLE), and what was therefore NOT checked.
-2. State the impact: which findings, citations, dates, values or drafts depended on that step, and downgrade them (VERIFIED to NOT VERIFIED; complete to PARTIAL; source-verified to NOT INDEPENDENTLY VERIFIED).
+2. State the impact: which findings, citations, dates, values or POINTs of the Vakil File depended on that step, and downgrade them (VERIFIED to NOT VERIFIED; complete to PARTIAL; source-verified to NOT INDEPENDENTLY VERIFIED).
 3. Try at most two sensible alternatives (another official source, page-image reading instead of OCR, a clearer copy or pasted text from the user), log each attempt, then stop trying.
 4. Continue everything that does not depend on the failed step, using placeholders and conditional wording, and put the failed item on the advocate's checklist with what to check, where and for which date.
 5. Never invent the result of a failed step (citation text, section number, OCR value, search result) and never say it was checked.

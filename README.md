@@ -1,55 +1,81 @@
-# Apex Syndicate Omega — Medical Negligence Case Skill (v17.1)
+# Apex Syndicate Omega — Vakil File Skill (v18.0)
 
-Claude ke liye ek **skill** jo India mein medical negligence aur hospital-vivaad (Consumer Commission: DCDRC / SCDRC / NCDRC) ke case ka audit aur drafting karti hai: client se sawal, hospital records ka page-by-page audit, forum aur deadline ki jaanch, standard-of-care audit (deviation, harm, causation, counterfactual alag-alag), red team, aur integrity gate ke peeche drafting (complaint, rejoinder, affidavit, written arguments, hearing prep, vakil ke liye Master Reference File).
+Claude ke liye ek **skill** jo India mein medical negligence aur hospital-vivaad (Consumer Commission DCDRC / SCDRC / NCDRC aur doosre forum) ke case ki **saari files padh kar vakil ke liye ek file** banati hai: **Vakil File** (Master Reference File).
 
-> Yeh ek AI sahayak hai. Yeh kisi asli medical expert ki opinion ya enrolled advocate ki jagah nahi leti. Har draft filing se pehle vakil ko dikhana zaroori hai.
+**Maksad:** case jitane wale **bade points** nikalna, har point ke saath uska saboot aur page, hospital ka jawab, hamara jawab, kanoon (verify hua ya nahi) aur antim dalil, taaki **vakil us file ko dekh kar court ke kagaz khud taiyar kar sake.**
+
+**Yeh skill court mein jama karne layak koi document nahi banati:** na complaint, na rejoinder, na affidavit, na application, na written arguments. Agar aap aisa document maangenge, to skill bataayegi ki use vakil banayenge, aur us document ke liye zaroori **material** (points, tathya aur unke page, kanoon, kya-kya hona chahiye) Vakil File mein de degi.
+
+> Yeh ek AI sahayak hai. Yeh kisi asli medical expert ki rai ya enrolled advocate ki jagah nahi leti. Vakil har tathya aur kanoon khud jaanch kar hi court ke kagaz banayein.
+
+## Vakil File mein kya hota hai (is kram mein)
+
+1. **Status line**: WORKING FILE / FILE CHECKED WITH FLAGS / FILE CHECKED. "Filing-ready" kabhi nahi.
+2. **Cover**: KUL POINTS KI SANKHYA, FILE KA MAQSAD, case ek nazar mein (forum, stage, agli tareekh, deadlines), aur file padhne ka tareeka.
+3. **JEETNE WALE BADE POINTS**: har point sabse majboot pehle. Saath mein uski taakat aur kaaran, sabse majboot saboot, virodhi ka sambhavit jawab, aur use aur kya majboot karega.
+4. **POINT 1 se N**: har point par 5 hisse. Hamari baat → virodhi ka jawab (source tag + WS Location) → hamara jawab → kanooni aadhar aur saboot → vakil ke liye antim dalil (relief ke saath).
+5. **Hamari kamzoriyan aur unka ilaaj**: kuch chhupaya nahi jaata.
+6. **Virodhi ke jawab ki jaanch**: unke apne kagazon se admissions, contradictions aur No Reply.
+7. **Timeline aur RECORD GAP graph.**
+8. **Expert ke liye sawal**, aur hospital ki committee report ki jaanch.
+9. **Abhi kya chahiye**: kaunse records mangwane hain, kis kram mein.
+10. **Rakam**: claimed vs documents se supported, formula ke saath.
+11. **Kanoon jo vakil ko verify karna hai.**
+12. **Hearing notes.**
+13. **Agle court document ke liye material**: jaise rejoinder ke liye para-wise matrix.
+14. **Aapke draft ki jaanch**: sirf tab, jab aapne apna draft diya ho.
+15. **Audit Trail Table**: kya verify hua, kya nahi, kya missing hai.
 
 ## Download aur install
 
-**Taiyar package:** [`dist/apex-syndicate-omega-v17.1.skill`](dist/apex-syndicate-omega-v17.1.skill)
+**Taiyar package:** [`dist/apex-syndicate-omega-v18.0.skill`](dist/apex-syndicate-omega-v18.0.skill)
 
-- **claude.ai / Claude app:** Settings → Capabilities → Skills → *Upload skill* → upar wali `.skill` file chuno. (Menu ke naam app ke version ke saath badal sakte hain.)
+- **claude.ai / Claude app:** Settings → Capabilities → Skills → *Upload skill* → upar wali `.skill` file chuno. (Menu ke naam app ke version ke saath badal sakte hain.) Purani version ho to pehle use hata dein.
 - **Claude Code:** `apex-syndicate-omega/` folder ko `~/.claude/skills/` (sirf aapke liye) ya project ke `.claude/skills/` mein copy karo.
 
-Install ke baad chat mein case files ke saath likho, jaise *"hospital ke khilaf consumer case hai, records attached hain"*, ya sirf *"Apex Syndicate Omega"*.
+Install ke baad saari case files upload karke likho, jaise *"saari files padh kar vakil ke liye file banao"*, ya `REF-FILE`.
 
 ## Repo ka dhaancha
 
 ```
-apex-syndicate-omega/          ← skill ka source (yahi package banta hai)
-├── SKILL.md                   ← hamesha load hone wale niyam: core rules 1–28, commands, delivery
-├── CHANGELOG.md               ← har version ka hisaab (v17.1 sabse upar)
-├── references/                ← har phase ke vistaar wale protocol (zaroorat par padhe jaate hain)
-│   ├── power-lines.md         ← TAGDA: legal force + evidentiary precision, source labels, language ladder
-│   ├── evidence-and-facts.md  ← Reading Log, Evidence Register (EV-ids), fact sheet, contradictions, CASE IMPACT
-│   ├── legal-research.md      ← forum gate, source hierarchy (TIER-A/B/C), citation check, deadlines
-│   ├── medical-audit.md       ← benchmark, four findings, intervals, RECORD GAP, expert/committee report ki jaanch
-│   ├── strategy-and-drafting.md ← contradiction audit, opponent counter, causation chain, missing-record steps, damages ledger
-│   ├── document-templates.md  ← pleadings + Master Reference File, Record-Gap Graph, Audit Trail Table
-│   ├── output-gates.md        ← output format, integrity gate, 40-point self-check, highlight gate
-│   └── …                      ← case-routing, client-interrogation, specialty-checklists (emergency/cardiac, stroke, …), state, glossary
-├── scripts/                   ← sirf arithmetic, Python standard library
-│   ├── deadline_calc.py       ← calendar deadline (dono inclusion rules)
-│   ├── interval_calc.py       ← ghante-minute ka interval (AM/PM, aadhi raat) aur RECORD GAP list
-│   ├── ledger_total.py        ← damages: claimed vs supported, Kam / Base / Zyada, formula ki khud ginti
-│   ├── draft_lint.py          ← draft ki numbering, annexure (rejoinder-friendly), internal label leak check
-│   └── test_scripts.py        ← in sab ka self-test (55 checks)
-└── tests/evals.json           ← 48 test cases (track A: technical, B: legal content)
+apex-syndicate-omega/            ← skill ka source (yahi package banta hai)
+├── SKILL.md                     ← hamesha load hone wale niyam: core rules 1–28, commands, delivery
+├── CHANGELOG.md                 ← har version ka hisaab (v18.0 sabse upar)
+├── references/
+│   ├── document-templates.md    ← Vakil File ka poora dhaancha + har court document ke liye vakil ka material
+│   ├── strategy-and-vakil-file.md ← points kaise chune aur ranked hon, contradiction audit, opponent counter,
+│   │                              causation chain, records na milne par kram, draft review, damages ledger
+│   ├── power-lines.md           ← TAGDA: legal force + evidentiary precision, source labels, language ladder
+│   ├── evidence-and-facts.md    ← Reading Log, Evidence Register (EV-ids), fact sheet, contradictions, CASE IMPACT
+│   ├── legal-research.md        ← forum gate, source hierarchy (TIER-A/B/C), citation check, deadlines
+│   ├── medical-audit.md         ← benchmark, four findings, intervals, RECORD GAP, expert/committee report
+│   ├── output-gates.md          ← Vakil File integrity gate, status ladder, 42-point self-check, highlight gate
+│   └── …                        ← case-routing, client-interrogation, specialty-checklists, state, glossary
+├── scripts/                     ← Python standard library, sirf ginti aur pattern jaanch
+│   ├── ref_file_lint.py         ← bani hui Vakil File ki structure jaanch
+│   ├── deadline_calc.py         ← calendar deadline (dono inclusion rules)
+│   ├── interval_calc.py         ← ghante-minute ka interval aur RECORD GAP list
+│   ├── ledger_total.py          ← damages: claimed vs supported, scenarios, formula ki khud ginti
+│   ├── draft_lint.py            ← aapke ya vakil ke draft ki jaanch (draft review)
+│   └── test_scripts.py          ← in sab ka self-test (69 checks)
+└── tests/evals.json             ← 51 test cases (track A: technical, B: legal content)
 
-dist/                          ← upload ke liye taiyar .skill package
-docs/audit/                    ← audit ke kagaz: R6 audit prompt, SKILL.md change register, 00 aur 01 audit reports
-tools/build_skill.py           ← validate + package banane wala script
-.github/workflows/validate.yml ← har push par automatic validation
+dist/                            ← upload ke liye taiyar .skill package
+docs/audit/                      ← audit ke kagaz: R6 prompt, SKILL.md change register, audit reports 00–02
+tools/build_skill.py             ← validate + package banane wala script
+.github/workflows/validate.yml   ← har push par automatic validation
 ```
 
 ## Commands (chat mein)
 
-`CONTINUE` · `SKIP` · `DIRECT DRAFT` · `FAST MODE` · `ADVOCATE PACK` · `QUICK CHECK` · `UPDATE` · `TAGDA` · `DETAIL` · `SHORT` · `STATE` · `STATE FULL` · `AUDIT-OPP` · `REF-FILE` · `GAP-GRAPH` · `DAMAGES` · `CORRECT` · `CITE-CHECK` · `AUDIT-TRAIL`
+`CONTINUE` · `SKIP` · `DIRECT FILE` · `FAST MODE` · `REF-FILE` (`VAKIL FILE`) · `QUICK CHECK` · `UPDATE` · `TAGDA` · `DETAIL` · `SHORT` · `STATE` · `STATE FULL` · `AUDIT-OPP` · `GAP-GRAPH` · `DAMAGES` · `CORRECT` · `CITE-CHECK` · `AUDIT-TRAIL`
 
-- **TAGDA** = jawab ko chhota karna nahi; *Maximum Legal Force + Evidentiary Precision*. Chhota sirf tab hota hai jab aap khud kahein ("chhota karo", "summary do").
-- **REF-FILE** = vakil ke liye Master Reference File: banner (KUL POINTS KI SANKHYA, FILE KA MAQSAD), har POINT par 5 hisse (hamari baat → virodhi ka jawab → hamara jawab → kanooni aadhar aur saboot → vakil ke liye antim dalil), aur ant mein Audit Trail Table.
-- **AUDIT-OPP** = virodhi ke Written Statement ke har material para ko unke apne annexures, medical record aur court orders se milana — "woh jhooth bol rahe hain" maan kar nahi, record ke label se.
-- **GAP-GRAPH** = monitoring ke RECORD GAP ka plain-text graph (gap ≠ "monitoring band thi").
+- **REF-FILE / VAKIL FILE**: Vakil File abhi banao ya taaza karo. Pehli upload ke saath bhi chalega; skill pehle zaroori intake karegi.
+- **DIRECT FILE**: paanch zaroori sawal, phir seedha Vakil File.
+- **UPDATE**: nayi file par sabse upar **CASE IMPACT** aata hai: kya majboot hua, kya kamzor hua, aur agla kadam.
+- **TAGDA**: jawab chhota karna nahi, *Maximum Legal Force + Evidentiary Precision*.
+- **AUDIT-OPP**: virodhi ke Written Statement ka har para unke apne kagazon se milana.
+- **GAP-GRAPH**: RECORD GAP ka plain-text graph (gap ≠ "monitoring band thi").
 
 ## Badlaav ke baad validate aur build
 
@@ -57,30 +83,26 @@ tools/build_skill.py           ← validate + package banane wala script
 python3 tools/build_skill.py
 ```
 
-Yeh check karta hai: frontmatter (description ≤ 1024 characters, warna claude.ai upload reject karta hai), koi `[PENDING:...]` placeholder na bacha ho, har section-naam ka hawala asli section tak jaaye, `tests/evals.json` valid ho, aur `scripts/test_scripts.py` pass ho. Phir `dist/` mein naya package banata hai. PyYAML chahiye (`pip install pyyaml`).
+Yeh in sab ki jaanch karta hai:
+- frontmatter (description ≤ 1024 characters);
+- koi `[PENDING:...]` placeholder na bacha ho;
+- har section-naam ka hawala asli section tak jaaye;
+- `tests/evals.json` valid ho;
+- saari scripts ka self-test pass ho.
 
-Sirf jaanch ke liye: `python3 tools/build_skill.py --check` · package source se match karta hai ya nahi: `python3 tools/build_skill.py --verify-dist`
+Phir `dist/` mein naya package banata hai. PyYAML chahiye (`pip install pyyaml`).
 
-## File doge to skill kya karegi (v17.1)
+- Sirf jaanch: `python3 tools/build_skill.py --check`
+- Package source se match karta hai ya nahi: `python3 tools/build_skill.py --verify-dist`
 
-- **Nayi file aate hi CASE IMPACT:** sabse upar likha milega ki is file se kaunsa point majboot hua (language ladder ka step pehle aur baad), kaunsa kamzor hua, kaunse sawal ya gap band hue, aur agla kadam kya hai. Kamzori bhi utni hi saaf batayi jaati hai.
-- **Seedha command bhi chalega:** pehli upload ke saath `REF-FILE` ya `AUDIT-OPP` likho. Skill pehle zaroori intake (Reading Log, forum, deadlines) karegi, phir file degi, aur findings ko PROVISIONAL batayegi.
-- **Hospital records na de to:** likhit maang → reminder → Commission mein application → (sarkari hospital ho to RTI ka rasta, NOT VERIFIED) → inkaar record par aane ke baad hi adverse inference ki dalil.
-- **Hospital ki committee report ya medical board ki rai:** kisne likhi, kaunse record dekhe, kya poocha gaya, kaunsa standard lagaya. Har nishkarsh record se milaya jaata hai.
-- **Vakil ke liye Ground strength table:** har ground ki taakat aur uska kaaran, virodhi ka sambhavit jawab, sabse bada risk, aur use kya majboot karega.
+## Version history (saar)
 
-Poora hisaab: [`CHANGELOG.md`](apex-syndicate-omega/CHANGELOG.md), [`docs/audit/00_AUDIT_REPORT.md`](docs/audit/00_AUDIT_REPORT.md) (v17.0) aur [`docs/audit/01_AUDIT_REPORT_v17.1.md`](docs/audit/01_AUDIT_REPORT_v17.1.md) (doosra pass).
+- **v18.0**: Vakil File hi mukhya product hai; court-filing documents band; `ref_file_lint.py`; 51 tests. Details: [`docs/audit/02_AUDIT_REPORT_v18.0.md`](docs/audit/02_AUDIT_REPORT_v18.0.md)
+- **v17.1**: CASE IMPACT, records na milne par kram, committee report ki jaanch, emergency/cardiac checklists, script bugs. [`01_AUDIT_REPORT_v17.1.md`](docs/audit/01_AUDIT_REPORT_v17.1.md)
+- **v17.0**: upload blocker (description 1,253 > 1,024), 6 adhure hawale, andar ke virodh, `interval_calc.py`. [`00_AUDIT_REPORT.md`](docs/audit/00_AUDIT_REPORT.md)
 
-## v17.0 mein kya theek hua tha (saar)
-
-
-1. **Upload blocker:** wip2 ka description 1,253 characters ka tha (limit 1,024) — package upload hi nahi hota. Ab 1,015.
-2. **6 adhure hawale (`[PENDING:...]`, 8 jagah)** asli sections se jode: source hierarchy table, opponent counter, Master Reference File template, highlight gate, Record-Gap Graph template, Audit Trail Table.
-3. **Andar ke virodh hataye:** user ki di hui judgment copy se VERIFIED (CITE-CHECK) vs NOT VERIFIED (legal-research, test 14); drafts mein "high-confidence" citation; court draft ke andar Audit Trail Table / element tags vs rule 11; E-xx (Error Log) vs Evidence ID; T1–T3 tiers vs T1–T4 evidence results.
-4. **Naya `interval_calc.py`:** skill ghante-minute ke interval ke liye `deadline_calc.py` ka hawala deti thi, jo sirf din ginta hai.
-5. **Caps jo zaroori cheez kaat sakte the** (4-line saar, 3–5 urgent actions, 4–8 issues, 8–12 oral points, 12-line snapshot) ab target hain, koi deadline / action / ground nahi katega.
-6. **15 naye adversarial tests** (summary ko mool WS batana, gayab WS gadhna, do takrate documents, procedural order ko admission, damages ko pakki rakam, yaad se judgment ka para, REF-FILE, GAP-GRAPH, CORRECT, lamba register).
+Poora hisaab: [`CHANGELOG.md`](apex-syndicate-omega/CHANGELOG.md).
 
 ## Repo ka naam
 
-Yeh repo abhi `New` naam se hai. Suggested naam: **`apex-syndicate-omega-skill`**. Badalne ke liye: GitHub par repo kholo → **Settings** → **General** → *Repository name* → naya naam → **Rename**. GitHub purane link ko apne-aap naye par bhej deta hai.
+Yeh repo abhi `New` naam se hai. Suggested naam: **`apex-syndicate-omega-skill`**. Badalne ke liye: GitHub par repo kholo → **Settings** → **General** → *Repository name* → naya naam → **Rename**.

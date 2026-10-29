@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Pattern-based cross-reference checks on a draft (plain text or markdown). Standard library only.
-
-It supports gates 2 (numbering and cross-references), 4 (annexures) and 8 (cleanliness: internal IDs,
-status words, persona names and the working labels of power-lines.md) of the
-output_integrity_gate. It matches patterns; it does not understand the draft, so a PASS is not a
-legal or factual check and the gate's own judgment still applies.
+"""Pattern-based checks on a draft that the user or their advocate wrote (plain text or markdown).
+Standard library only. The skill itself writes no draft for filing; this script supports
+draft_review (strategy-and-drafting.md): numbering and cross-references, annexures, and
+cleanliness (internal IDs, status words, persona names and Vakil File labels pasted into the draft).
+It matches patterns; it does not understand the draft, so a PASS is not a legal or factual check.
 
 A reference to another document's paragraph ("para 7 of the written version", "paragraphs 9 to 12
 of the WS") is not one of the draft's own paragraphs and is not checked against its numbering.
@@ -61,7 +60,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("draft")
     ap.add_argument("--annexures", help="text file listing the master annexure index (one id per line, e.g. A-1)")
-    ap.add_argument("--copy", choices=["advocate", "clean"], default="advocate")
+    ap.add_argument("--copy", choices=["advocate", "clean"], default="advocate",
+                    help="advocate: a working draft, bracketed notes allowed; clean: a final draft must carry none")
     ap.add_argument("--stop-at", help="regex: ignore numbering from the first line matching it (e.g. an annexure list)")
     a = ap.parse_args()
     text = open(a.draft, encoding="utf-8").read()
