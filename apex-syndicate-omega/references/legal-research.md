@@ -156,7 +156,7 @@ Do not assume a legal notice, a records request or hospital correspondence exten
 - limitation and every other deadline through the deadline_engine, with the law as in force on each relevant date (legal_version_control)
 - proper parties and reliefs
 - cause of action
-- consumer and service status
+- consumer and service status (for a government, charitable or scheme hospital ask what was paid, by whom and under which scheme; the free-service question and its current status are in `anchors_checked_2026_10_23`, NOT VERIFIED)
 - burden of proof mapped issue by issue (it can differ across issues, and may shift where the hospital controls records, check res ipsa loquitur only on proper facts)
 - pleadings versus proof
 - admissibility (originals, certified copies, signatures, electronic record requirements as applicable, using the digital evidence checklist and the evidence regime that applies to the proceeding)

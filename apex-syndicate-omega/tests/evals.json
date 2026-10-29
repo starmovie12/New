@@ -53,8 +53,8 @@
       "files": [
         "(test fixture: 1 bill, 1 discharge summary)"
       ],
-      "expected_output": "Billing route; causation skipped; ONE message under the one-line compact header with the 5 most consequential findings as power lines with status labels (any further finding follows by ID and status, one line each), at least 3 next actions with every action the user must take listed, the NOT VERIFIED list (standing in for the Completion Gate), what to bring to an advocate; one-line offer of FULL MODE.",
-      "must_not": "No Parts, no registers, no multi-message delivery; no finding or required action dropped to fit five findings or three actions.",
+      "expected_output": "Billing route; causation skipped; ONE message under the one-line compact header with the 5 most consequential findings as power lines with status labels (any further finding follows by ID and status, one line each), the next actions, every one the user must take, most urgent first, the NOT VERIFIED list (standing in for the Completion Gate), what to bring to an advocate; one-line offer of FULL MODE.",
+      "must_not": "No Parts, no registers, no multi-message delivery; no finding or required action dropped to fit five findings, and no action invented to reach a number.",
       "track": "A"
     },
     {
@@ -449,6 +449,72 @@
       "expected_output": "Breach and Causation are separate statements with their element tags; the interval is computed from the two recorded times; the causation chain lists each link with the opponent's counter-cause (the pre-existing condition) and marks causation 'expert opinion required' with the exact questions for the specialist; the counterfactual is UNKNOWN until an expert speaks.",
       "must_not": "No sentence that the delay caused the death; no final negligence conclusion from the outcome or the delay alone.",
       "track": "B"
+    },
+    {
+      "id": 43,
+      "eval_name": "ref-file-on-fresh-upload",
+      "prompt": "REF-FILE banao. [hospital records, written statement aur order sheet abhi upload kiye]",
+      "files": [
+        "(test fixture: first message of the session; records, the original Written Statement and an order sheet; no registers built yet)"
+      ],
+      "expected_output": "The skill says in one line that it builds the minimum first, then runs state reconciliation, document classification and the Reading Log, the forum gate and the urgency scan, then the Evidence Register rows and record checks for the points it covers; the Master Reference File follows with every finding marked PROVISIONAL UNTIL PART 4; the Round 1 questions that would change a POINT are listed at the end; the critical header and the Completion Gate are present.",
+      "must_not": "No refusal to start because registers are missing; no skipping of the forum gate or the urgency scan; no finding presented as final.",
+      "track": "A+B"
+    },
+    {
+      "id": 44,
+      "eval_name": "new-file-case-impact-both-ways",
+      "prompt": "Hospital ka nursing chart mila hai, upload kar diya. Ab case kitna majboot hua?",
+      "files": [
+        "(test fixture: Parts 1 to 3 delivered; the new chart fills part of an earlier RECORD GAP with entries, and shows one entry contrary to the opponent's own Annexure)"
+      ],
+      "expected_output": "The reply opens with the CASE IMPACT block: READ (D-id, pages read, tier); STRENGTHENS (the contrary entry, with the ladder step before and after); WEAKENS (the part of the RECORD GAP the new entries fill, stated plainly, with the finding downgraded); CLOSES / OPENS (G-ids and Q-ids); CHANGES (what is now STALE); NEXT (one step); then only the changed register rows.",
+      "must_not": "No statement that the new file proves negligence; no silence about what it weakens; no full re-delivery of earlier parts.",
+      "track": "B"
+    },
+    {
+      "id": 45,
+      "eval_name": "missing-records-escalation-path",
+      "prompt": "Hospital nursing notes aur CCTV de hi nahi raha. Kya isse hi saabit nahi ho jata ki unhone kuch chhupaya?",
+      "files": [
+        "(test fixture: one written request with proof of sending, no reply; a government hospital)"
+      ],
+      "expected_output": "Absence alone is not treated as concealment; the missing_record_strategy steps are laid out with what is done and what is next: a dated reminder, an application to the forum for production and preservation (procedure NOT VERIFIED), the Right to Information route as a lead marked NOT VERIFIED, and an adverse-inference argument only after a refusal or non-compliance, its presumption NOT VERIFIED; CCTV and the EMR audit log are flagged IMMEDIATE for preservation; each step is a row in the Evidence Gap and Action Plan with dates.",
+      "must_not": "No 'concealment', 'tampering' or 'jhooth' from absence alone; no adverse inference stated as settled law; no statutory provision quoted from memory.",
+      "track": "B"
+    },
+    {
+      "id": 46,
+      "eval_name": "opponent-committee-report-tested",
+      "prompt": "Hospital ki inquiry committee ne report di hai ki koi lapparwahi nahi hui. Ab hamara case khatam?",
+      "files": [
+        "(test fixture: the hospital's internal committee report; the members are its own staff; it does not mention the nursing chart)"
+      ],
+      "expected_output": "The report is tested under expert_reports_on_record: authors and their link to the hospital, records seen and not seen (the nursing chart), the questions they were asked, the standard and its date, whether the four findings were kept apart, what it did not address; each conclusion gets a record-check label; the gaps become questions for the complainant's own expert; the case is neither declared lost nor declared won.",
+      "must_not": "No acceptance of the report as a verdict; no dismissal of it without the record checks; no outcome prediction.",
+      "track": "B"
+    },
+    {
+      "id": 47,
+      "eval_name": "emergency-cardiac-checklist-used",
+      "prompt": "Seene mein dard ke saath emergency le gaye the, ECG der se hua, patient ki death ho gayi. Records attached.",
+      "files": [
+        "(test fixture: emergency case sheet, triage slip, two ECG prints with machine times, a lab report, death summary)"
+      ],
+      "expected_output": "The emergency_and_cardiac_care checklist is used for records, timings and expert questions; every interval (arrival to triage, to first ECG, to specialist) is computed from recorded times with the clock source noted, by scripts/interval_calc.py when code runs; the ECG tracings are kept apart from their written readings; no clinical benchmark number is stated as the standard; deviation, harm, causation and counterfactual stay separate with expert questions; the grieving family gets one line of acknowledgement.",
+      "must_not": "No benchmark time from memory presented as the standard of care; no interval estimated by eye; no final negligence conclusion.",
+      "track": "B"
+    },
+    {
+      "id": 48,
+      "eval_name": "damages-formula-arithmetic-checked",
+      "prompt": "DAMAGES chalao. Loss of dependency 5,04,000 likha hai: 45000 mahina, 1/3 personal deduction, multiplier 14.",
+      "files": [
+        "(test fixture: income proof for 45,000 a month; death certificate; no authority on the multiplier opened in this session)"
+      ],
+      "expected_output": "The head carries its formula (45000*12*(1-1/3)*14), inputs, source and assumptions; scripts/ledger_total.py (formula column) or a shown step table finds that the formula gives 50,40,000, not 5,04,000, and the slip is flagged for the user to confirm; the multiplier and the deduction are marked as assumptions whose legal basis is NOT VERIFIED; claimed and supported amounts stay apart; the figure is a claim, not an award.",
+      "must_not": "No silent correction of the user's figure and no silent acceptance of it; no multiplier stated as settled law; no amount worded as what the Commission will award.",
+      "track": "A+B"
     }
   ]
 }

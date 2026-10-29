@@ -37,12 +37,12 @@ Also do not include: threats beyond lawful steps; admissions on contested facts;
 
 ## complaint_template
 
-Structure: cause title (forum, parties with description and address); jurisdiction paragraph (territorial and pecuniary basis as verified); limitation paragraph with dates, and a condonation request if the complaint may be late; facts in date order with annexure references; particulars of deficiency or negligence, with deviation, harm and causation pleaded separately as the record supports; notice sent and the response; relief and prayer, heads matching the Damages Calculation Ledger and the valuation basis; list of documents and annexure index; verification and affidavit as the forum requires [provision: advocate to confirm].
+Structure: cause title (forum, parties with description and address); jurisdiction paragraph (territorial and pecuniary basis as verified); limitation paragraph with dates, and a condonation request if the complaint may be late; facts in date order with annexure references; particulars of deficiency or negligence, with duty (the standard of care, from its Benchmark Record or an expert, never from memory), deviation, harm and causation pleaded separately as the record supports; notice sent and the response; relief and prayer, heads matching the Damages Calculation Ledger and the valuation basis; list of documents and annexure index; verification and affidavit as the forum requires [provision: advocate to confirm].
 Also do not include: guaranteed outcomes; allegations of tampering or fabrication without a record basis; anything that hides an adverse document.
 
 ## rejoinder_template
 
-Structure: cause title; short preliminary statement that the complaint is maintained; response to the written version paragraph by paragraph (admitted, denied or explained, each on the fact sheet); response to new facts and documents the opposite party introduced; response to legal objections with verified authorities only; the opposite party's own contradictions and admissions (Self-Goal Register, in context); prayer; verification.
+Structure: cause title; short preliminary statement that the complaint is maintained; response to the written version paragraph by paragraph (admitted, denied or explained, each on the fact sheet); response to new facts and documents the opposite party introduced; response to legal objections with verified authorities only; the opposite party's own contradictions and admissions (Self-Goal Register and the rows of `documentary_contradiction_audit` in strategy-and-drafting.md, in context); records the opposite party holds and has not produced, with the requests made (`missing_record_strategy`); prayer; verification.
 Also do not include: a new cause of action; anything inconsistent with the complaint unless the change is explained and approved by the advocate; denials the documents contradict.
 
 ## evidence_affidavit_template
@@ -62,7 +62,12 @@ Also do not include: vague reasons with no document; reasons that change between
 
 ## records_preservation_template
 
-Structure: parties and the purpose; itemised list of records sought (case sheet, nursing notes, theatre and anaesthesia records, imaging, lab and blood bank records, consent forms, billing, EMR audit logs, CCTV); earlier requests with dates and proof of sending and any reply; why each record is needed; request for certified copies and for preservation until production; undertaking to pay the prescribed charges; relief. The source of the duty to supply or preserve records is researched as law and marked NOT VERIFIED until checked.
+Two forms, chosen by the step reached in `missing_record_strategy` (strategy-and-drafting.md):
+
+- Letter to the hospital (step 1 and the reminder): patient and episode identified with masked identifiers; itemised list of records sought (case sheet, nursing notes, doctors' orders and drug charts, theatre and anaesthesia records, monitor and ECG prints, imaging with the images, lab and blood bank records, consent forms, billing, EMR audit logs, CCTV of named areas and times); request for certified copies and for preservation of every listed item until the dispute ends; offer to pay the charges; a date for reply; mode of sending and proof of delivery.
+- Application to the forum (step 3): cause title and case number; the records sought, itemised; earlier requests with dates, proof of sending and any reply (word for word); why each record is needed, tied to a pleaded point; the direction asked (production, preservation, certified copies) [provision: advocate to confirm]; prayer; verification.
+
+For a public hospital, a Right to Information request is a further route (lead only, NOT VERIFIED; `missing_record_strategy` step 4). The source of the duty to supply or preserve records is researched as law and marked NOT VERIFIED until checked.
 Also do not include: an allegation of alteration or tampering made from absence or appearance alone.
 
 ## appeal_memo_template

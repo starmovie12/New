@@ -16,7 +16,10 @@ so a time after midnight cannot be put on the wrong day.
   interval_calc.py --start "2026-03-05 11:50 PM" --end "2026-03-06 00:15"
   interval_calc.py --entries entries.csv --gap-minutes 60 --kind "vitals entries" --json
 
-entries.csv has a header row with: time, event (optional), source (optional), clock (optional).
+entries.csv has a header row with: time (or datetime / timestamp), event, source and clock (the last
+three optional). A separate "date" column is joined to a time that carries no date. Dates must be
+YYYY-MM-DD: settle the day and month order first (date_time_rules in evidence-and-facts.md), so
+04/05 is never guessed.
 """
 import argparse, csv, datetime as dt, json, re, sys
 
@@ -26,7 +29,7 @@ DT_RE = re.compile(r"^\s*(\d{4}-\d{2}-\d{2})[ T]+(\d{1,2}):(\d{2})\s*([AaPp][Mm]
 def parse_dt(s):
     m = DT_RE.match(s or "")
     if not m:
-        raise ValueError(f"'{s}' is not 'YYYY-MM-DD HH:MM' or 'YYYY-MM-DD hh:mm AM/PM'")
+        raise ValueError(f"'{s}' is not 'YYYY-MM-DD HH:MM' or 'YYYY-MM-DD hh:mm AM/PM' (settle day/month order first)")
     day, hh, mm, ampm = m.group(1), int(m.group(2)), int(m.group(3)), m.group(4)
     try:
         date = dt.date.fromisoformat(day)
@@ -80,8 +83,11 @@ def load_entries(path):
     out, problems = [], []
     for i, r in enumerate(rows, 2):
         r = {(k or "").strip().lower(): (v or "").strip() for k, v in r.items()}
+        when = next((r[k] for k in ("time", "datetime", "date-time", "date time", "timestamp") if r.get(k)), "")
+        if r.get("date") and not re.match(r"^\s*\d{4}-\d{2}-\d{2}", when):
+            when = f"{r['date']} {when}"
         try:
-            t = parse_dt(r.get("time", ""))
+            t = parse_dt(when)
         except ValueError as e:
             problems.append(f"line {i}: {e}")
             continue

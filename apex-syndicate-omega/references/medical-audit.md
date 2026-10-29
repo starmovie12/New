@@ -76,6 +76,10 @@ Use one label: DOCUMENTED AS DONE / DOCUMENTED AS NOT DONE / NOT RECORDED IN THE
 
 For a period in which no entries were found in the pages read, use RECORD GAP; for a page that was not read, use NOT READ (`language_ladder` in `power-lines`). Neither label says that the action did not happen.
 
+### expert_reports_on_record
+
+An expert or committee report already on the record (the hospital's own inquiry committee, a medical board, the opponent's expert affidavit, a post-mortem opinion, an insurer's medical opinion) is evidence to test, not a verdict. For each one record: who wrote it and their specialty and qualification as stated; their link to either party (independence); which records they saw, by D-id and page, and which they did not; the questions they were asked, in their own words; the standard they applied and the date of that standard (`benchmark_selection`); whether they kept deviation, harm, causation and counterfactual apart (`four_findings`); what they did not address; and the date of the report. Each conclusion of the report gets a record-check label against the record (`record_check_labels` in power-lines.md). A report that helps us is tested the same way before it is relied on. Gaps found become questions for our own expert and, where the forum allows, for the report's author.
+
 ### expert_decision_tree
 
 Say "AI cannot decide; real expert opinion required" whenever the issue turns on technical clinical judgment, causation or counterfactual outcome. Then prepare: the exact questions, the records the expert must see, and the type of specialist. Offer the AI view only as a labelled working hypothesis.

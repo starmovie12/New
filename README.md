@@ -1,4 +1,4 @@
-# Apex Syndicate Omega — Medical Negligence Case Skill (v17.0)
+# Apex Syndicate Omega — Medical Negligence Case Skill (v17.1)
 
 Claude ke liye ek **skill** jo India mein medical negligence aur hospital-vivaad (Consumer Commission: DCDRC / SCDRC / NCDRC) ke case ka audit aur drafting karti hai: client se sawal, hospital records ka page-by-page audit, forum aur deadline ki jaanch, standard-of-care audit (deviation, harm, causation, counterfactual alag-alag), red team, aur integrity gate ke peeche drafting (complaint, rejoinder, affidavit, written arguments, hearing prep, vakil ke liye Master Reference File).
 
@@ -6,7 +6,7 @@ Claude ke liye ek **skill** jo India mein medical negligence aur hospital-vivaad
 
 ## Download aur install
 
-**Taiyar package:** [`dist/apex-syndicate-omega-v17.0.skill`](dist/apex-syndicate-omega-v17.0.skill)
+**Taiyar package:** [`dist/apex-syndicate-omega-v17.1.skill`](dist/apex-syndicate-omega-v17.1.skill)
 
 - **claude.ai / Claude app:** Settings → Capabilities → Skills → *Upload skill* → upar wali `.skill` file chuno. (Menu ke naam app ke version ke saath badal sakte hain.)
 - **Claude Code:** `apex-syndicate-omega/` folder ko `~/.claude/skills/` (sirf aapke liye) ya project ke `.claude/skills/` mein copy karo.
@@ -18,26 +18,26 @@ Install ke baad chat mein case files ke saath likho, jaise *"hospital ke khilaf 
 ```
 apex-syndicate-omega/          ← skill ka source (yahi package banta hai)
 ├── SKILL.md                   ← hamesha load hone wale niyam: core rules 1–28, commands, delivery
-├── CHANGELOG.md               ← har version ka hisaab (v17.0 sabse upar)
+├── CHANGELOG.md               ← har version ka hisaab (v17.1 sabse upar)
 ├── references/                ← har phase ke vistaar wale protocol (zaroorat par padhe jaate hain)
 │   ├── power-lines.md         ← TAGDA: legal force + evidentiary precision, source labels, language ladder
-│   ├── evidence-and-facts.md  ← Reading Log, Evidence Register (EV-ids), fact sheet, contradictions
+│   ├── evidence-and-facts.md  ← Reading Log, Evidence Register (EV-ids), fact sheet, contradictions, CASE IMPACT
 │   ├── legal-research.md      ← forum gate, source hierarchy (TIER-A/B/C), citation check, deadlines
-│   ├── medical-audit.md       ← benchmark, four findings, intervals aur RECORD GAP
-│   ├── strategy-and-drafting.md ← contradiction audit, opponent counter, causation chain, damages ledger
+│   ├── medical-audit.md       ← benchmark, four findings, intervals, RECORD GAP, expert/committee report ki jaanch
+│   ├── strategy-and-drafting.md ← contradiction audit, opponent counter, causation chain, missing-record steps, damages ledger
 │   ├── document-templates.md  ← pleadings + Master Reference File, Record-Gap Graph, Audit Trail Table
-│   ├── output-gates.md        ← output format, integrity gate, 38-point self-check, highlight gate
-│   └── …                      ← case-routing, client-interrogation, specialty-checklists, state, glossary
+│   ├── output-gates.md        ← output format, integrity gate, 40-point self-check, highlight gate
+│   └── …                      ← case-routing, client-interrogation, specialty-checklists (emergency/cardiac, stroke, …), state, glossary
 ├── scripts/                   ← sirf arithmetic, Python standard library
 │   ├── deadline_calc.py       ← calendar deadline (dono inclusion rules)
 │   ├── interval_calc.py       ← ghante-minute ka interval (AM/PM, aadhi raat) aur RECORD GAP list
-│   ├── ledger_total.py        ← damages: claimed vs supported, Kam / Base / Zyada scenario
-│   ├── draft_lint.py          ← draft ki numbering, annexure, internal label leak check
-│   └── test_scripts.py        ← in sab ka self-test (43 checks)
-└── tests/evals.json           ← 42 test cases (track A: technical, B: legal content)
+│   ├── ledger_total.py        ← damages: claimed vs supported, Kam / Base / Zyada, formula ki khud ginti
+│   ├── draft_lint.py          ← draft ki numbering, annexure (rejoinder-friendly), internal label leak check
+│   └── test_scripts.py        ← in sab ka self-test (55 checks)
+└── tests/evals.json           ← 48 test cases (track A: technical, B: legal content)
 
 dist/                          ← upload ke liye taiyar .skill package
-docs/audit/                    ← audit ke kagaz: R6 audit prompt, SKILL.md change register, 00_AUDIT_REPORT.md
+docs/audit/                    ← audit ke kagaz: R6 audit prompt, SKILL.md change register, 00 aur 01 audit reports
 tools/build_skill.py           ← validate + package banane wala script
 .github/workflows/validate.yml ← har push par automatic validation
 ```
@@ -61,9 +61,18 @@ Yeh check karta hai: frontmatter (description ≤ 1024 characters, warna claude.
 
 Sirf jaanch ke liye: `python3 tools/build_skill.py --check` · package source se match karta hai ya nahi: `python3 tools/build_skill.py --verify-dist`
 
-## v17.0 mein kya theek hua (saar)
+## File doge to skill kya karegi (v17.1)
 
-Poora hisaab [`CHANGELOG.md`](apex-syndicate-omega/CHANGELOG.md) aur [`docs/audit/00_AUDIT_REPORT.md`](docs/audit/00_AUDIT_REPORT.md) mein hai. Sabse zaroori:
+- **Nayi file aate hi CASE IMPACT:** sabse upar likha milega ki is file se kaunsa point majboot hua (language ladder ka step pehle aur baad), kaunsa kamzor hua, kaunse sawal ya gap band hue, aur agla kadam kya hai. Kamzori bhi utni hi saaf batayi jaati hai.
+- **Seedha command bhi chalega:** pehli upload ke saath `REF-FILE` ya `AUDIT-OPP` likho. Skill pehle zaroori intake (Reading Log, forum, deadlines) karegi, phir file degi, aur findings ko PROVISIONAL batayegi.
+- **Hospital records na de to:** likhit maang → reminder → Commission mein application → (sarkari hospital ho to RTI ka rasta, NOT VERIFIED) → inkaar record par aane ke baad hi adverse inference ki dalil.
+- **Hospital ki committee report ya medical board ki rai:** kisne likhi, kaunse record dekhe, kya poocha gaya, kaunsa standard lagaya. Har nishkarsh record se milaya jaata hai.
+- **Vakil ke liye Ground strength table:** har ground ki taakat aur uska kaaran, virodhi ka sambhavit jawab, sabse bada risk, aur use kya majboot karega.
+
+Poora hisaab: [`CHANGELOG.md`](apex-syndicate-omega/CHANGELOG.md), [`docs/audit/00_AUDIT_REPORT.md`](docs/audit/00_AUDIT_REPORT.md) (v17.0) aur [`docs/audit/01_AUDIT_REPORT_v17.1.md`](docs/audit/01_AUDIT_REPORT_v17.1.md) (doosra pass).
+
+## v17.0 mein kya theek hua tha (saar)
+
 
 1. **Upload blocker:** wip2 ka description 1,253 characters ka tha (limit 1,024) — package upload hi nahi hota. Ab 1,015.
 2. **6 adhure hawale (`[PENDING:...]`, 8 jagah)** asli sections se jode: source hierarchy table, opponent counter, Master Reference File template, highlight gate, Record-Gap Graph template, Audit Trail Table.

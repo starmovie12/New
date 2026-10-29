@@ -91,6 +91,31 @@ def main():
         open(p3, "w", encoding="utf-8").write("RH-id,Head,Amount,Amount supported\nRH-01,Refund,50000,70000\n")
         r = run(f"{HERE}/ledger_total.py", p3)
         ok &= check("supported above claimed flagged", "more than the amount claimed" in r.stdout and r.returncode == 1, r.stdout)
+        # ledger_total: formula check
+        p4 = os.path.join(t, "l4.csv")
+        open(p4, "w", encoding="utf-8").write(
+            "RH-id,Head,Amount claimed,Formula\n"
+            "RH-01,Loss of dependency,5040000,45000*12*(1-1/3)*14\n"
+            "RH-02,Interest,45000,\"2,50,000 x 9% x 2\"\n"
+            "RH-03,Interest,33333,100000/3\n"
+            "RH-04,Mental agony,300000,lump sum\n")
+        r = run(f"{HERE}/ledger_total.py", p4)
+        ok &= check("formula with fraction matches", "RH-01: 45000*12*(1-1/3)*14 = ₹50,40,000.00 — MATCH" in r.stdout, r.stdout)
+        ok &= check("formula with x and % matches", "RH-02: 2,50,000 x 9% x 2 = ₹45,000.00 — MATCH" in r.stdout, r.stdout)
+        ok &= check("rounding is noted, not flagged", "RH-03" in r.stdout and "rounded" in r.stdout and r.returncode == 0, r.stdout)
+        ok &= check("prose formula is noted as not checked", "RH-04: formula 'lump sum' is not plain arithmetic" in r.stdout, r.stdout)
+        p5 = os.path.join(t, "l5.csv")
+        open(p5, "w", encoding="utf-8").write("RH-id,Head,Amount,Formula\nRH-01,Loss of dependency,504000,45000*12*(1-1/3)*14\nRH-02,Bad,10,__import__('os')\n")
+        r = run(f"{HERE}/ledger_total.py", p5)
+        ok &= check("formula mismatch flagged", "MISMATCH with amount ₹5,04,000.00" in r.stdout and r.returncode == 1, r.stdout)
+        ok &= check("code in a formula is refused, not run", "RH-02: formula" in r.stdout and "not plain arithmetic" in r.stdout, r.stdout)
+        # interval_calc: separate date and time columns
+        e2 = os.path.join(t, "e2.csv")
+        open(e2, "w", encoding="utf-8").write("date,time,event\n2026-03-05,11:50 PM,arrival\n2026-03-06,00:40,ECG\n2026-03-06,04/05,bad\n")
+        r = run(f"{HERE}/interval_calc.py", "--entries", e2, "--gap-minutes", "30", "--json")
+        d = json.loads(r.stdout)
+        ok &= check("date and time columns joined across midnight", [g["minutes"] for g in d["gaps"]] == [50], d)
+        ok &= check("unparseable time reported with its line", any("line 4" in x for x in d["problems"]) and r.returncode == 1, d)
         # draft_lint
         good = os.path.join(t, "good.md")
         open(good, "w", encoding="utf-8").write(
@@ -116,6 +141,21 @@ def main():
         r = run(f"{HERE}/draft_lint.py", lab)
         for needle in ["RECORD GAP", "SROT-SAMARTHIT TATHYA", "WS-MOOL-TEXT", "WS Location", "EV-004"]:
             ok &= check(f"detects label in a pleading: {needle}", needle in r.stdout and r.returncode == 1, r.stdout)
+        # draft_lint on a para-wise rejoinder: the written version's paragraphs, inline annexures, the other side's annexures
+        rej = os.path.join(t, "rejoinder.md")
+        open(rej, "w", encoding="utf-8").write(
+            "1. The contents of para 1 of the written version are denied (A-1, p.2).\n"
+            "2. In reply to para 7 of the written version, the first ECG is recorded later (A-2, p.1).\n"
+            "3. In reply to paragraphs 9 to 12 of the WS, see para 2 above and the OP's own chart (Annexure R-3).\n"
+            "4. As stated in para 6 above, nothing more.\n")
+        idx2 = os.path.join(t, "idx2.txt")
+        open(idx2, "w", encoding="utf-8").write("A-1\nA-2\n")
+        r = run(f"{HERE}/draft_lint.py", rej, "--annexures", idx2)
+        out = r.stdout
+        ok &= check("written version paragraphs are not our paragraphs", "paragraph 7" not in out and "paragraph 9" not in out and "paragraph 12" not in out, out)
+        ok &= check("our own dangling paragraph still caught", "refers to paragraph 6, which does not exist" in out, out)
+        ok &= check("inline (A-1, p.2) counts as cited", "annexures indexed but never cited: none" in out, out)
+        ok &= check("other party's annexure is a warning", "WARN: annexures of another party or series not in our index (check each is on the record): R-3" in out, out)
     print("ALL PASSED" if ok else "SOME FAILED")
     sys.exit(0 if ok else 1)
 

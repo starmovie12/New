@@ -6,6 +6,7 @@ Sections in this file (the names are the tags other sections refer to):
 - `documentary_contradiction_audit`
 - `point_wise_opponent_counter`
 - `causation_chain`
+- `missing_record_strategy`
 - `issue_wise_response_flow`
 - `cross_examination_protocol`
 - `drafting_protocol`
@@ -60,6 +61,18 @@ The likely answer is our forecast, not the opponent's words: it is never written
 For each harm alleged, build the chain one link at a time from the four medical findings (`four_findings` in medical-audit.md): Link (for example: deviation, then the injury or deterioration, then the final harm) | What the record shows for this link (EV-id or D-id with page) | Status | The opponent's counter-cause at this link (pre-existing disease, natural course, patient factors, another treating team) | Evidence or expert question that would settle it.
 
 A chain is only as strong as its weakest link. A shown deviation does not carry causation by itself (core rule 26), and a link that rests on medical opinion stays "expert opinion required" until a real expert gives it.
+
+## missing_record_strategy
+
+The hospital usually holds the records that decide the case. For each record that matters to a finding or POINT and is NOT SUPPLIED, REQUESTED-NOT-GIVEN or REFUSED (`missing_and_altered_records` in evidence-and-facts.md), work the steps in order and record each one:
+
+1. Ask in writing for the itemised record, with proof of sending (the letter form of `records_preservation_template` in document-templates.md). Diary it as a PRESERVATION deadline (`deadline_engine`); CCTV and EMR audit logs are IMMEDIATE.
+2. If there is no answer, send one dated reminder. Record any reply word for word, with its date.
+3. Apply to the forum for a direction to produce or preserve the record (the application form of the same template). Whether and how the forum can direct production, and the form to use, are NOT VERIFIED until the procedure is checked.
+4. For a government or other public hospital, a request under the Right to Information Act, 2005 may be a further route: a lead only, NOT VERIFIED (check the exemptions, the rule on personal information, and who may ask for a deceased patient's records).
+5. Only when a refusal is on the record, or a direction to produce is not obeyed, argue that the Commission may draw an adverse inference. The presumption relied on is researched under the evidence statute that applies to the proceeding (`legal_version_control` in legal-research.md) and stays NOT VERIFIED until its text is read. Never argue tampering or concealment from absence alone.
+
+Each record is one row of the Evidence Gap and Action Plan: record sought | the finding or POINT it decides | step reached | date and proof of each step | reply received (exact words, or none) | next step and its date. A gap carried through these steps becomes a documented fact (the request, the refusal, the non-compliance) that can be pleaded as such.
 
 ## issue_wise_response_flow
 
