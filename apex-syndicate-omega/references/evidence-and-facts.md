@@ -4,6 +4,7 @@ Sections in this file (the names are the tags other sections refer to):
 
 - `file_reading_and_evidence_protocol`
 - `fact_model`
+- `evidence_register`
 
 ---
 
@@ -25,7 +26,7 @@ Match every record to the right patient and episode using more than a name: a sa
 
 For every file keep a Reading Log: total pages, pages actually read, pages unreadable or partly readable, extraction method (text layer, OCR, visual reading), OCR or handwriting confidence, suspected missing pages (gaps in page numbers, abrupt endings), and printed page number versus file-viewer page number. State plainly "I read X of Y pages" and never imply completeness beyond that. If you cannot read part of a file, say which part and ask the user for a clearer copy.
 
-For very long files, or when the whole file cannot be held at once, make a Batch Plan: split the file into page ranges (state each range, for example pp.1-40), read one range fully, log it, then move to the next and say so. Keep the Reading Log cumulative with a status per range: READ, PARTLY READ, UNREADABLE or NOT YET READ. Do not skim and call it read. Every message that depends on the file lists the ranges still unread. A finding that depends on an unread range is PROVISIONAL (pages X-Y unread), and no negative statement ("no entry exists") is made until every relevant range has been read.
+For very long files, or when the whole file cannot be held at once, make a Batch Plan: split the file into page ranges (state each range, for example pp.1-40), read one range fully, log it, then move to the next and say so. Keep the Reading Log cumulative with a status per range: READ, PARTLY READ, UNREADABLE or NOT READ (not yet read). Only a range marked READ supports a page cite (core rule 23). Do not skim and call it read. Every message that depends on the file lists the ranges still unread. A finding that depends on an unread range is PROVISIONAL (pages X-Y unread), and no negative statement ("no entry exists") is made until every relevant range has been read.
 
 ### file_type_methods
 
@@ -100,7 +101,7 @@ Show lineage in the Intake Register and the Master Fact Sheet, and give a short 
 
 ## fact_model
 
-- **ids**: Use stable IDs everywhere and across later messages: documents D-xx, facts F-xxx, questions Q-xx, citations C-xx, annexures A-xx, change entries CH-xx, open gaps G-xx, lineage roots L-xx, proceedings PR-xx, deadlines DL-xx, contradictions X-xx, relief heads RH-xx, tool or step failures E-xx, version registry entries VR-xx. Never reuse or renumber an ID; a withdrawn item keeps its ID with status WITHDRAWN.
+- **ids**: Use stable IDs everywhere and across later messages: documents D-xx, facts F-xxx, questions Q-xx, citations C-xx, annexures A-xx, change entries CH-xx, open gaps G-xx, lineage roots L-xx, proceedings PR-xx, deadlines DL-xx, contradictions X-xx, relief heads RH-xx, tool or step failures E-xx, version registry entries VR-xx, evidence items EV-xxx (`evidence_register`), correction entries CR-xx (`correction_register` in document-templates.md). E-xx always means the Error Log; an evidence item is EV-xxx, never E-xxx. Never reuse or renumber an ID; a withdrawn item keeps its ID with status WITHDRAWN.
 
 ### master_fact_sheet
 
@@ -122,9 +123,29 @@ Keep a Version Registry for every document, draft and deliverable: VR-id | Item 
 
 ### contradiction_resolution
 
-Every contradiction gets an entry X-xx: Source A (D-id and page, or client statement) | Source B | exactly what differs | possible innocent explanations (amended or re-printed copy, different clock, different episode, transcription or OCR error, different author or lineage, faulty memory) | possible adverse explanations | evidence that would settle it and who holds it | status RESOLVED (state how), UNRESOLVED or NEEDS-USER.
+Every contradiction gets an entry X-xx: Version A (its source: D-id and page, paragraph or line, or client statement, and its tier under `source_hierarchy` in legal-research.md) | Version B (the same) | exactly what differs | possible innocent explanations (amended or re-printed copy, different clock, different episode, transcription or OCR error, different author or lineage, faulty memory) | possible adverse explanations | evidence that would settle it and who holds it | status RESOLVED (state how), UNRESOLVED or NEEDS-USER.
 
-Do not pick a side without a reason shown and do not average two values. An unresolved contradiction stays visible in the fact sheet as DISPUTED and in Open Gaps, and no critical finding rests on one side of it without saying so. Contradictions in the user's own account use the same entry, put to the user as "the other side will point this out".
+Do not pick a side without a reason shown and do not average two values. A version is called correct (RESOLVED) only when a TIER-A source read in this session settles it, and the reason is written. An unresolved contradiction stays visible in the fact sheet as DISPUTED, in Open Gaps, in the Audit Trail Table (Contradictions and UNRESOLVED) and as a question for counsel, and no critical finding rests on one side of it without saying so. A difference is written as a difference; calling one version false is a separate statement that needs step 5 of `language_ladder` in power-lines.md. Contradictions in the user's own account use the same entry, put to the user as "the other side will point this out".
 
 - **evidence_citation_format**: Cite sources uniformly as [D-03 p.4 (printed p.2)] or [Client Q-12, Round 2]. Use this in analysis so the advocate can reach the source quickly.
-- **separation_rule**: Keep factual allegation separate from legal conclusion. "The doctor gave wrong treatment" is an allegation until supported; do not write it as an established conclusion.
+- **separation_rule**: Keep factual allegation separate from legal conclusion. "The doctor gave wrong treatment" is an allegation until supported; do not write it as an established conclusion. Fact, inference and legal conclusion go in separate sentences (`sentence_discipline` in power-lines.md, core rule 25).
+
+## evidence_register
+
+The item-level index that a Master Reference File, an Audit Trail Table and the Traceability Map cite. The Master Fact Sheet says what is claimed; the Evidence Register says exactly where the proof sits and what it does not prove. One row per evidence item, ID EV-001, EV-002 and so on:
+
+| Field | What goes in it |
+|---|---|
+| Evidence ID | EV-xxx |
+| Document | D-id and kind (hospital record, order, affidavit, Written Statement, bill, correspondence) |
+| Exact location | Page (file page and printed page), paragraph, annexure, line or region |
+| Exact content | What the source says, verbatim for a short entry or a close paraphrase marked as such |
+| Status | DOCUMENTED / AS RECORDED (the entry exists; its truth is not shown) / ALLEGED / INFERRED |
+| Source label | SROT-SAMARTHIT TATHYA / SROT-SAAR / INFERENCE / LEGAL PROPOSITION / UNRESOLVED (`source_labels` in power-lines.md) |
+| Tier | TIER-A / TIER-B / TIER-C (`source_hierarchy` in legal-research.md) |
+| Reading status | READ / PARTLY READ / UNREADABLE / NOT READ (from the Reading Log) |
+| WS Location (only for the opponent's reply) | Page and paragraph of the original Written Statement and the part read, or MOOL WS NAHI DEKHA |
+| Supports | The F-ids and the issue or POINT it supports, with its element tag (core rule 26) |
+| Limitation | What this item does NOT prove (for example "shows the entry, not that the test was done at that time") |
+
+Rules: a page or paragraph is entered only if the Reading Log shows it as READ; otherwise the location is SATIK SROT-STHAN SATYAPIT NAHI. One item used for two points keeps one EV-id and is cited, not copied. An EV-id is internal and is never printed in a pleading; the pleading cites the annexure and page (`draft_writing_rules` in power-lines.md).

@@ -23,6 +23,27 @@ Mandatory at intake and again whenever a notice, order, reply or file changes th
 
 ### source_hierarchy
 
+Two orders live here: which source is read first for each kind of statement (the statement table), and how legal authorities rank among themselves (the authority order). Core rule 22 points to both.
+
+**Statement table.** For each kind of statement read the TIER-A source first. A TIER-B source may be used when TIER-A was not seen, and the statement then says so. A TIER-C source is a lead only: it is never quoted as the original and the statement carries SROT-SAAR (`source_labels` in power-lines.md). The tier names are TIER-A, TIER-B and TIER-C so that they are never confused with T1 to T4, the four evidence results (`evidence_grading` in evidence-and-facts.md).
+
+| What is being stated | TIER-A (read first) | TIER-B | TIER-C (lead only) |
+|---|---|---|---|
+| What the court or Commission ordered | The order itself, original or certified copy | The order text on the official portal (e-Jagriti, court site) | A Master File, a summary, a cause-list entry, memory |
+| What the complainant alleged | The complaint as filed | The complainant's affidavit or rejoinder, where it bears on the point | A Master File or summary |
+| What the opponent said | The opponent's original Written Statement (written version), with its page and paragraph (`WS Location`) | The opponent's other filed papers (affidavits, replies to applications) | A Master File or summary (SROT-SAAR; "Yeh virodhi ke mool jawab ka satyapit uddharan nahi hai") |
+| A medical fact (what happened, what was written) | The hospital's original record, page read (case sheet, nursing chart, drug chart, lab or machine print) | A typed copy, the discharge summary, the hospital's own reply quoting its record | A Master File, a summary, the user's recollection (CLIENT-REPORTED) |
+| A legal authority | The statute or judgment text opened in this session (official source) | A copy the user supplied (NOT VERIFIED — USER COPY READ: `user_supplied_copy`) | Memory, a headnote, a news report or a lead (NOT VERIFIED) |
+| The stage or a date of the case | The order or document that fixes it | The portal or status report | A Master File |
+
+Use of the table:
+
+1. It decides what to read first and how much a statement can claim. It does not decide burden of proof, admissibility or evidentiary weight; those effects are checked against the applicable law (`verification_chain`) or marked NOT VERIFIED.
+2. When two sources differ on a date, an amount or the order of events, write Version A and Version B, each with its source, page, paragraph or line, and tier. One version is called correct only when a TIER-A source read in this session settles it, with the reason written. Otherwise the point stays UNRESOLVED, goes into the contradiction register (`contradiction_resolution` in evidence-and-facts.md), the Audit Trail Table and the questions for counsel. Calling a version false is a separate statement that goes through `language_ladder` in power-lines.md.
+3. A TIER-B or TIER-C statement never carries the status DOCUMENTED as if read from TIER-A, and the TIER-A page that would settle it goes to Open Gaps.
+
+**Authority order** (for legal authorities among themselves):
+
 1. Applicable legislation and official gazette text (current and as in force on the relevant date).
 2. Judgments of the Supreme Court and relevant High Courts from official or reliable court sources.
 3. Orders and practice directions of the relevant Commission and applicable procedural rules and prescribed forms.
@@ -43,7 +64,9 @@ For every material legal proposition, work through: governing law, commencement 
 
 ### legal_verification_record
 
-Every material legal proposition, rule, time limit or citation gets a record (these are also the columns of the Citation Registry): Authority | Exact provision or paragraph | Source type (official gazette or India Code text / official court or commission site / reliable law report / secondary summary / none found) | Effective date and version checked | Status on the relevant date (IN FORCE / NOT IN FORCE / STAYED OR IN ABEYANCE / NOT VERIFIED) | Later treatment (amendment, stay, abeyance, withdrawal, overruling, distinguishing, or "none found after checking") | Factual fit | Verification status with reason.
+Every material legal proposition, rule, time limit or citation gets a record (these are also the columns of the Citation Registry): Authority (correct name) | Citation | Exact provision or pinpoint paragraph (only if read) | Limited proposition (no wider than the provision or paragraph read) | Source type (official gazette or India Code text / official court or commission site / reliable law report / secondary summary / none found) | Effective date and version checked | Status on the relevant date (IN FORCE / NOT IN FORCE / STAYED OR IN ABEYANCE / NOT VERIFIED) | Later treatment (amendment, stay, abeyance, withdrawal, overruling, distinguishing, or "none found after checking") | Factual fit (does it help our point, and how far) | Verification status with reason: VERIFIED (official text opened in this session, all three checked: name and citation, paragraph, limited proposition) / NOT VERIFIED — USER COPY READ / NOT VERIFIED.
+
+An authority that does not fit our point is not kept as "supporting"; the proposition is never written wider than the paragraph read.
 
 VERIFIED needs the primary text or the judgment itself opened in this session, matched to the exact provision, in the version in force on the relevant date. A summary, headnote, news report, blog or your own recollection never gives VERIFIED.
 
@@ -55,7 +78,7 @@ If an official site will not open, a judgment cannot be found, or only a summary
 
 If the user supplies a copy of an Act, rule, notification or judgment, read it: it is the best text available for what the provision says. It counts as a primary text only if it shows its official source and date (India Code or gazette print, court or Commission portal print) and you read the exact provision.
 
-Record the Source type as "user-supplied copy of official text" and keep the status NOT VERIFIED until the official source or the advocate confirms that the copy matches the version in force on the relevant date. A draft may then plead from it only with the "(verify citation before filing)" note.
+Record the Source type as "user-supplied copy of official text" and keep the status NOT VERIFIED — USER COPY READ until the official source or the advocate confirms that the copy matches the version in force on the relevant date. A draft may then plead from it only with the "(verify citation before filing)" note.
 
 Tell the user once that every draft stays "for counsel review" until that check is done; this is by design.
 
@@ -75,6 +98,7 @@ Where an older and a newer regime could govern (for example the consumer protect
   - Filing, written-version, appeal and compliance periods are separate and each is checked under its own provision (deadline_engine).
   - Check exact current provisions and amendments.
 - Jurisdiction rules: pecuniary jurisdiction under the Consumer Protection (Jurisdiction of the District Commission, the State Commission and the National Commission) Rules, 2021 or the rules then in force. Check the calculation basis (value of consideration paid versus compensation claimed), the current thresholds, territorial jurisdiction, and whether the complainant is a "consumer" or any exclusion applies.
+- The Bolam test and its Bolitho qualification (English decisions; how Indian courts apply them, through Jacob Mathew and Kusum Sharma among others, is to be read from the Indian judgments themselves): leads only, never quoted from memory.
 - Medical negligence authorities to consider (check factual fit, exact proposition, later treatment): Jacob Mathew v. State of Punjab (2005); Indian Medical Association v. V.P. Shantha (1995); Samira Kohli v. Prabha Manchanda (2008); V. Kishan Rao v. Nikhil Super Speciality Hospital (2010) (not a blanket rule on expert evidence); Spring Meadows Hospital v. Harjot Ahluwalia (1998); Malay Kumar Ganguly v. Sukumar Mukherjee (2009); Martin F. D'Souza v. Mohd. Ishfaq (2009) (check procedural context and later treatment); Kusum Sharma v. Batra Hospital (2010).
 - Records duties: the medical regulator's professional conduct regulations in force on the date of care, Clinical Establishments norms, state rules. Check amendment, stay, abeyance and withdrawal: for example the 2023 NMC professional conduct regulations and the later notification placing them in abeyance both appear on the NMC site, and that notification is reported to have adopted the 2002 Indian Medical Council professional conduct regulations in the meantime, so identify which text governed on the relevant date and look for any later notification.
 - Electronic evidence: Bharatiya Sakshya Adhiniyam, 2023 (reported as in force from 1 July 2024; confirm from the commencement notification) versus the earlier Section 65B regime (Section 63 of the new Act is reported to be the successor provision, with a certificate that may also call for a hash value and an expert's signature: check the current text and certificate form). Applicability depends on the proceeding, the forum's rules and any transitional or savings provision, not only on the document's date or the event date; check what the forum actually applies to the proceeding.
@@ -122,7 +146,7 @@ Keep one Deadline Register per proceeding (PR-id), with an ID (DL-xx) for each d
 
 For each deadline show: DL-id | Proceeding ID | Type | Trigger event, its date and source document | Provision and rule, in the version in force on the trigger date | Period | Calendar arithmetic with the inclusion or exclusion rule used | Resulting date | Alternative calculation where the start date or a "continuing cause of action" is arguable | Risk flag (SAFE / WATCH / DANGER / POSSIBLY EXPIRED) | Verification status | Advocate check required (always Y until the advocate confirms). Where the forum is not ESTABLISHED, mark every computed date PRESUMED-FORUM.
 
-Do not assume a legal notice, a records request or hospital correspondence extends a period. Where a complaint may be late, plan the condonation application and supporting affidavit grounds. Check forum-specific appeal provisions and recent amendments. Re-run the arithmetic before a date appears in any draft or pack. When code execution is available use `scripts/deadline_calc.py` for the arithmetic; it does not know the law, so the period, trigger and inclusion rule come from the verified provision. The three nearest deadlines go into the Deadline Summary of every message.
+Do not assume a legal notice, a records request or hospital correspondence extends a period. Where a complaint may be late, plan the condonation application and supporting affidavit grounds. Check forum-specific appeal provisions and recent amendments. Re-run the arithmetic before a date appears in any draft or pack. When code execution is available use `scripts/deadline_calc.py` for the arithmetic; it does not know the law, so the period, trigger and inclusion rule come from the verified provision. The three nearest deadlines, and every other deadline already overdue or within 30 days, go into the Deadline Summary of every message (critical_header in SKILL.md).
 
 ## legal_audit_protocol
 
@@ -140,4 +164,12 @@ Do not assume a legal notice, a records request or hospital correspondence exten
 - inconsistent stands taken earlier by the user (notice versus complaint versus affidavit)
 - settlement communications versus admissions of liability, with admissibility and confidentiality questions flagged for counsel.
 
-- **issues_for_determination**: Frame 4 to 8 precise issues in the order a judge would, with for each: evidence sufficiency on the current record, burden, main uncertainty, what would change the assessment. Where a case looks weak, state exactly which missing evidence caused that view and which evidence could change it.
+- **issues_for_determination**: Frame as many precise issues as the dispute raises (usually 4 to 8; an issue is never merged or dropped to reach a number), in the order a judge would, with for each: its element tag (Duty, Breach, Causation, Damage, Procedural or Maintainability: core rule 26), evidence sufficiency on the current record, burden, main uncertainty, what would change the assessment. Where a case looks weak, state exactly which missing evidence caused that view and which evidence could change it.
+
+### maintainability_table
+
+The forum, jurisdiction, limitation, consumer-status and party checks above are shown as one table before any merits work, one row per check: Check | What the record shows (with source) | Provision relied on and its version on the relevant date | Status (VERIFIED / NOT VERIFIED / PRESUMED-FORUM) | Result (MAINTAINABLE ON THE RECORD / DOUBTFUL / BAR LIKELY / CANNOT TELL) | What would settle it | Fresh-law check (date looked up, or "not looked up in this session"). A limitation or jurisdiction point is never marked clear from memory.
+
+### burden_of_proof_map
+
+One row per issue: Issue | Element tag | Who carries the burden on the current reading of the law (NOT VERIFIED until checked) | Standard | Evidence that meets it now | What could shift it (for example records the hospital holds and has not produced; res ipsa loquitur only on proper facts) | Status. The map states the working position for the advocate; it is not a ruling, and a shift of burden is argued, not assumed.

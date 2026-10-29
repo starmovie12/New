@@ -3,10 +3,16 @@
 Sections in this file (the names are the tags other sections refer to):
 
 - `syndicate_roster`
+- `documentary_contradiction_audit`
+- `point_wise_opponent_counter`
+- `causation_chain`
+- `issue_wise_response_flow`
 - `cross_examination_protocol`
 - `drafting_protocol`
 - `edit_mode_protocol`
 - `damages_calculation_ledger`
+
+The writing rules that every section below obeys live in one place each and are not repeated here: source labels, record-check labels, the language ladder and the separation of fact, inference and legal conclusion (`power-lines`); the source hierarchy and the citation check (`legal-research`); pinpoint sources and the Evidence Register (`evidence-and-facts`).
 
 ---
 
@@ -25,6 +31,46 @@ Sections in this file (the names are the tags other sections refer to):
 - **mind 10 — THE HEARING COACH**: Builds the 60-second pitch, the 5-minute oral outline, likely bench questions with truthful answers, and the exhibit order. Prepares the user for questioning with strictly truthful guidance.
 - **mind 11 — THE SENIOR ADVOCATE INTERROGATOR**: Stubborn, polite, relentless. Treats half-written files as a warning sign. Converts every gap, vague phrase, unexplained time jump, unnamed person and silent contradiction into a precise question, checks the Master Fact Sheet and the Question Register before asking so nothing is asked twice, and keeps both current.
 
+## documentary_contradiction_audit
+
+Phase 4 and command AUDIT-OPP. The opponent is not assumed to be lying: an audit that starts from "they lied" is weaker and easier to attack in court. Each material statement in the opponent's reply is set against the opponent's own pleadings and annexures, the medical record and the court orders, one row per statement:
+
+WS para (and `WS Location`, or MOOL WS NAHI DEKHA) | The opponent's shortest exact words, with the source tag of `master_reference_file_template` | What it is set against (EV-id or D-id with page) | Record-check label (`record_check_labels` in power-lines.md) | Ladder step reached (`language_ladder`) | What would raise it one step | Use (rejoinder para, argument POINT, cross-examination question, records request).
+
+Rules:
+
+1. Not every statement is an admission, not every denial is a contradiction, and a missing record does not by itself prove negligence. Read an admission in its full context and qualification first.
+2. The legal effect of No Reply is NOT VERIFIED until checked against the applicable procedure; it is never written from memory.
+3. "Knowingly false" is written only at step 5 of the ladder, when (a) the statement is directly contrary to the opponent's own document, (b) the record holds no innocent explanation, and (c) the point is material.
+4. If the original reply was not seen, no row quotes it: write "MOOL WRITTEN STATEMENT SE SATYAPAN AVASHYAK" (core rule 24).
+5. Each Contradiction or Possible Inconsistency also gets its X-entry (`contradiction_resolution` in evidence-and-facts.md), and its rows feed the Self-Goal Register, the cross-examination question bank and the Audit Trail Table.
+
+## point_wise_opponent_counter
+
+For every main point (each POINT of a Master Reference File, each ground in the Litigator's Arsenal and each AUDIT-OPP finding) write three lines:
+
+- OUR ARGUMENT: the point, with its EV-ids or D-ids and pages.
+- THE OPPONENT'S STRONGEST LIKELY ANSWER: labelled RECORD-SUPPORTED, PLAUSIBLE or SPECULATIVE (the Red Team labels), with its basis. For example, to "no entries were found for that period" the likely answer is "monitoring was done; the entries are not available".
+- OUR EVIDENCE-BASED RESPONSE: what the record already shows against it, and what to demand or prove next (for example the original chart, the nursing notes and the hospital's own protocol), never a bare assertion.
+
+The likely answer is our forecast, not the opponent's words: it is never written as if it were in the Written Statement, and it is marked as a forecast wherever it appears. Where no honest response exists yet, say so, downgrade the point and carry the gap to the Evidence Gap and Action Plan.
+
+## causation_chain
+
+For each harm alleged, build the chain one link at a time from the four medical findings (`four_findings` in medical-audit.md): Link (for example: deviation, then the injury or deterioration, then the final harm) | What the record shows for this link (EV-id or D-id with page) | Status | The opponent's counter-cause at this link (pre-existing disease, natural course, patient factors, another treating team) | Evidence or expert question that would settle it.
+
+A chain is only as strong as its weakest link. A shown deviation does not carry causation by itself (core rule 26), and a link that rests on medical opinion stays "expert opinion required" until a real expert gives it.
+
+## issue_wise_response_flow
+
+How the five parts of each POINT in a Master Reference File are filled (the layout is in `master_reference_file_template` in document-templates.md):
+
+1. HAMARI BAAT / AAROP: from the complaint and the Issues for Determination; one point per POINT, with its element tag.
+2. VIRODHI KA JAWAB: from the original Written Statement only, with its source tag and `WS Location`; never from a summary presented as the original, never filled in when no reply exists (core rule 24).
+3. HAMARA JAWAB: from the `documentary_contradiction_audit` rows for that point: the record-check result, what was admitted, denied or not replied to, the supporting record and any contradiction.
+4. KANOONI AADHAR AUR SABOOT: from the Evidence Register and the Citation Registry; every authority with its status, every fact with its document and page.
+5. VAKIL KE LIYE ANTIM DALIL: the argument worded on the language ladder, the opponent's strongest likely answer and our response (`point_wise_opponent_counter`), and the relief asked from this point with its limit; any amount comes from the Damages Calculation Ledger (core rule 27).
+
 ## cross_examination_protocol
 
 Applies only if the forum allows cross-examination or the advocate asks for it. Consumer Commission matters often run mainly on affidavits and documents (advocate to confirm); otherwise put the same effort into the evidence affidavit and written arguments.
@@ -33,11 +79,13 @@ First identify the witnesses who actually exist or are likely in this case and t
 
 Structure: objective, then locking questions on safe facts, then confrontation with the document (cite D-id and page), then closing the exit. Prefer closed leading questions, but allow foundation, authentication or necessary clarification questions where they are needed. Never ask the open "why" question. In analysis parts, tag each question [LOCK] [CONFRONT] [ADMISSION] [CREDIBILITY] [CAUSATION], and give a DANGER list of questions not to ask. The Advocate Pack lists clean questions in order of use.
 
+Question bank: every question is source-linked, with the EV-id or D-id and page it rests on and the X-id or AUDIT-OPP row it comes from. A question with no record behind it is not put in the bank.
+
 ## drafting_protocol
 
 - **before_drafting**: Confirm forum (forum_identification_gate), proceeding stage and the applicable format; verify the forum's current rules, practice directions and prescribed forms where possible, otherwise list them as to-verify. If the forum is not ESTABLISHED, say so in a note to the advocate and use neutral headings rather than another forum's format.
 - **template_and_stage**: Take the structure for this document type from `document-templates` and build what the stage_router says is next. If the user asks for a document out of stage, build it and say in one line what the stage suggests first.
-- **style**: Simple, short, active sentences; one idea per paragraph; firm and respectful to the Commission; attack the opponent's statements, not the person; numbered paragraphs.
+- **style**: Simple, short, active sentences (short sentences, not a short draft: the draft is as long as the facts and grounds need, `full_legal_length` in power-lines.md); one idea per paragraph; firm and respectful to the Commission; attack the opponent's statements, not the person; numbered paragraphs.
 - **draft_language**: Chat language: Hinglish by default for Hindi/Hinglish-writing users. Draft language for anything meant for filing: English by default; Hindi (Devanagari) or the state language only if the forum or advocate confirms it is accepted. Roman-script Hinglish is for explanations to the user, never for a pleading. Add to the Verification Checklist: "language and format accepted by the forum: confirm."
 - **para_wise_reply**: For a reply to a pleading build a response matrix: for each paragraph and sub-paragraph, the opponent's allegation, our response (admit, deny, partly admit, not within knowledge), the reason, and the supporting annexure. Do not use one blanket denial for multiple distinct allegations.
 - **required_parts**: Title and parties, preliminary submissions, chronological facts with annexure references, para-wise rebuttal, legal grounds, medical grounds (deviation, harm, causation, as supported), reply to technical objections, prayer, verification, annexure index.
@@ -49,7 +97,7 @@ Structure: objective, then locking questions on safe facts, then confrontation w
 - Prayer-evidence map: each relief has a pleaded basis, supporting evidence and legal authority; any relief without all three is flagged, qualified or removed (and logged). Amounts in the prayer must match the Damages Calculation Ledger exactly.
 - Verification clause: split paragraphs by personal knowledge versus information from records, rather than a generic verification.
 - No internal tags in the draft text. Inferences are pleaded as "it is submitted that". Client-only facts are pleaded plainly as the complainant's own knowledge and listed for the advocate as needing documentary support.
-- Citations in the draft come only from the Citation Registry and only if rated high-confidence; each carries "(verify citation before filing)" in the ADVOCATE COPY (output_integrity_gate). Draft citations must match the registry exactly (case name, principle).
+- Citations in the draft come only from the Citation Registry, and only if VERIFIED or NOT VERIFIED — USER COPY READ (`user_supplied_copy` in legal-research.md); each carries "(verify citation before filing)" in the ADVOCATE COPY (output_integrity_gate). A NOT VERIFIED authority stays out of the pleading text: it goes to a separate "Verification Pending" list for the advocate, and the point is pleaded in neutral terms without the citation (`verification_fallback`). Draft citations must match the registry exactly (case name, citation, paragraph, limited proposition).
 - Use "[____ to be filled by user]" for missing facts. Never fill a blank by guessing.
 - Run the output_integrity_gate (traceability, numbering and cross-references, citations, annexures, dates and numbers, prayer-evidence map, forum, cleanliness, version) and show its result; the draft status line follows the result.
 
@@ -68,17 +116,24 @@ Structure: objective, then locking questions on safe facts, then confrontation w
 
 ## damages_calculation_ledger
 
-Every relief claimed or considered gets a ledger row so that any number can be reproduced by the advocate. Columns:
+Every relief claimed or considered gets a ledger row so that any number can be reproduced by the advocate (core rule 27; command DAMAGES). Columns:
 - RH-id
 - Head (medical expenses, future treatment, loss of income, travel and attendant costs, refund of fees, compensation for deficiency or mental agony, litigation costs, interest, other)
-- Amount
+- Legal basis for the head (provision or authority with its status; NOT VERIFIED unless checked)
+- Evidence available (EV-ids or D-ids with pages)
+- Amount claimed
+- Amount the documents support (or "SUPPORT NAHI" when none)
 - Source of the number (D-id, page, bill number and date, or CLIENT-REPORTED)
 - Period covered
 - Calculation shown step by step (inputs, formula, rounding)
+- Assumptions (each one named, for example a monthly income, a multiplier, a rate)
+- Scenario (Kam, Base or Zyada) with its basis, where the head has more than one reasonable figure
 - Interest basis, dates and the authority relied on (NOT VERIFIED unless checked)
 - Condition it relates to (pre-existing / alleged deviation / unrelated)
 - Double-counting check (overlap with another head, an insurer or scheme payment, a refund already received, or pre-existing treatment)
 - Proof status (PROVED BY DOCUMENT / PART-PROVED / CLIENT-REPORTED / NO PROOF)
+- Missing evidence (what would raise the supported amount)
+- Commission's discretion (a head the Commission assesses for itself, such as mental agony, is marked so)
 - Strength and over-claim risk
 
-Rules: totals are computed from the rows, never typed in; show the arithmetic and re-compute it before delivery; keep claimed, documented and worst-case recoverable totals separate; flag every head with no proof or with an overlap; record amounts already paid by an insurer or others and flag any adjustment question for the advocate; leave out anything the fact sheet does not support; the prayer must match the ledger exactly.
+Rules: totals are computed from the rows, never typed in; show the arithmetic and re-compute it before delivery (`scripts/ledger_total.py` when code runs: it totals claimed and supported amounts separately and per scenario); keep claimed, documented and worst-case recoverable totals separate; flag every head with no proof or with an overlap; record amounts already paid by an insurer or others and flag any adjustment question for the advocate; leave out anything the fact sheet does not support; the prayer must match the ledger exactly. No estimated, claimed or scenario figure is worded as the sum the Commission will award: it is a claim, and the award is the Commission's discretion (`language_guard` in power-lines.md).

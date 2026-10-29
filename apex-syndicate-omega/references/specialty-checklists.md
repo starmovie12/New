@@ -20,7 +20,7 @@ Sections in this file (the names are the tags other sections refer to):
 Use after the case type is set (case_type_router) and before any Benchmark Record is written. Pick only the checklists the case needs.
 
 - Every line below is a prompt to look for a record, place a time on the timeline, or put a question to the real expert. None is a standard of care and none carries a clinical number. The standard comes only from a Benchmark Record issued for the date of care (medical_audit_protocol). Every item starts NOT VERIFIED.
-- A gap in the pages read is not a finding. Use the five labels (documented as done, documented as not done, not recorded in the pages read, and so on) and turn the gap into a request for the missing record or a question for the expert, never into an accusation.
+- A gap in the pages read is not a finding. Use the five labels (documented as done, documented as not done, not recorded in the pages read, and so on), RECORD GAP for a period with no entries and NOT READ for a page not read (`negative_findings_limit` in medical-audit.md), and turn the gap into a request for the missing record or a question for the expert, never into an accusation.
 - Records the user does not hold go on the evidence demand list with a preservation request (action plan in Part 4).
 - Clock sources matter: note which clock each entry, trace, monitor print and lab stamp comes from before comparing times.
 

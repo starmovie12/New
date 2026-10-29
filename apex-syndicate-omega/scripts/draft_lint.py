@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Pattern-based cross-reference checks on a draft (plain text or markdown). Standard library only.
 
-It supports gates 2 (numbering and cross-references), 4 (annexures) and 8 (cleanliness) of the
+It supports gates 2 (numbering and cross-references), 4 (annexures) and 8 (cleanliness: internal IDs,
+status words, persona names and the working labels of power-lines.md) of the
 output_integrity_gate. It matches patterns; it does not understand the draft, so a PASS is not a
 legal or factual check and the gate's own judgment still applies.
 
@@ -17,9 +18,14 @@ PRAYER_REF = re.compile(r"\bprayer\s*(?:clause\s*)?\(([a-z])\)", re.I)
 LABEL = re.compile(r"^\s*\(([a-z])\)\s")
 ANX_REF = re.compile(r"\bAnnexures?\s+((?:[A-Z]{1,2}-?\d{1,3})(?:\s*(?:,|and|&|to|-|–)\s*[A-Z]{0,2}-?\d{1,3})*)", re.I)
 ID_TOKEN = re.compile(r"([A-Za-z]{1,2})-?(\d{1,3})")
-TAGS = re.compile(r"\b(?:D|F|C|X|RH|DL|CH|Q|PR|E|G|L|VR)-\d{1,3}\b")
+TAGS = re.compile(r"\b(?:D|F|C|X|RH|DL|CH|Q|PR|E|G|L|VR|EV|CR)-\d{1,3}\b")
 STATUS = re.compile(r"\b(?:NOT VERIFIED|PRESUMED-FORUM|PRESUMED|DISPUTED|CLIENT-REPORTED|CORROBORATED|WORKING DRAFT|FOR COUNSEL REVIEW|CONFLICTED|UNKNOWN|STALE|SUPERSEDED)\b")
 PERSONA = re.compile(r"Apex Syndicate|Sentinel|Red Team|Judge's Chamber|Litigator's Arsenal")
+# working labels of power-lines.md and the REF-FILE / GAP-GRAPH / AUDIT-TRAIL material, never printed in a pleading
+LABELS = re.compile(r"SROT-SAMARTHIT TATHYA|SROT-SAAR|SATIK SROT-STHAN SATYAPIT NAHI|MOOL WS NAHI DEKHA|"
+                    r"MOOL WRITTEN STATEMENT SE SATYAPAN AVASHYAK|WS-MOOL-TEXT|WS-ARTH|SAAR SE — MOOL|JAWAB UPLABDH NAHI|"
+                    r"\bRECORD GAP\b|\bNOT READ\b|\bINFERRED\b|\bUNRESOLVED\b|\bLAGU NAHI\b|\bKOI NAHI\b|ELEMENT TAG|"
+                    r"\bPROVISIONAL\b|\bTIER-[ABC]\b|WS Location|Audit Trail Table|🟨")
 NOTE_BLANK = re.compile(r"\[_{2,}[^\]]*\]")
 NOTE_CITE = re.compile(r"\(verify citation before filing\)", re.I)
 BRACKET = re.compile(r"\[[^\]\n]+\]")
@@ -120,6 +126,8 @@ def main():
     pers = sorted(set(PERSONA.findall(text)))
     add("FAIL" if tags else "PASS", "internal ids in the draft: " + (", ".join(tags[:12]) if tags else "none"))
     add("FAIL" if (stat or pers) else "PASS", "internal status words or persona names: " + (", ".join(stat + pers) if (stat or pers) else "none"))
+    labs = sorted(set(LABELS.findall(text)))
+    add("FAIL" if labs else "PASS", "working labels, source tags or reference-file material in the draft: " + (", ".join(labs) if labs else "none"))
     blanks, cites = NOTE_BLANK.findall(text), NOTE_CITE.findall(text)
     if a.copy == "clean":
         add("FAIL" if (blanks or cites) else "PASS", f"clean copy carries no notes: found {len(blanks)} blank(s), {len(cites)} citation note(s)")

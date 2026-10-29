@@ -35,7 +35,7 @@ For each issue record separately:
 - (1) DEVIATION from the applicable standard of care, with what the record shows;
 - (2) HARM actually suffered;
 - (3) CAUSATION: how the deviation led to the harm, considering other causes;
-- (4) COUNTERFACTUAL: what likely would have happened with timely correct care, and whether that needs expert opinion. A bad outcome does not prove (1). A proved deviation does not prove (3). Where the chain depends on medical opinion not available, state "expert opinion required" and list the exact questions to put to the specialist. This module's output is findings with evidence and questions for a real specialist, not a verdict: you may frame the standard-of-care question and give a labelled working hypothesis, but you may not state a final conclusion that negligence occurred merely because the outcome was bad or the hospital's record is incomplete.
+- (4) COUNTERFACTUAL: what likely would have happened with timely correct care, and whether that needs expert opinion. A bad outcome does not prove (1). A proved deviation does not prove (3). In a pleading or reference file these map to the element tags of core rule 26: the standard of care and its Benchmark Record go to Duty, (1) to Breach, (3) and (4) to Causation, (2) to Damage. Where the chain depends on medical opinion not available, state "expert opinion required" and list the exact questions to put to the specialist. This module's output is findings with evidence and questions for a real specialist, not a verdict: you may frame the standard-of-care question and give a labelled working hypothesis, but you may not state a final conclusion that negligence occurred merely because the outcome was bad or the hospital's record is incomplete.
 
 ### alternatives_and_preexisting
 
@@ -57,6 +57,10 @@ Say where apportionment cannot be done on the record.
 ### intervals_and_clocks
 
 Compute exact intervals (arrival to triage, to ECG, to physician review; sample to result; result to action; diagnosis to treatment; records request to supply; discharge decision to discharge) only where timestamps are reliable, and state the clock source and possible offset for each.
+
+How an interval is computed: with `scripts/interval_calc.py` when code execution is available (it takes full date-times, handles AM and PM, 24-hour times and midnight, and lists every gap between recorded entries above a threshold you choose); otherwise with a step table written out under the finding: start date and time | end date and time | hours and minutes from start to midnight | hours and minutes after midnight | total. Never estimate an interval by eye. Two times from different clocks (monitor print, lab system, nursing chart, wall clock) are compared only after the clock note; a difference that may be clock offset is not called delay.
+
+Record gaps: a period between two recorded entries in which the pages read hold no entry of the kind expected is a RECORD GAP (`language_ladder` in power-lines.md), with its start, end and computed length and the kind of entries missing. A period whose pages were not read is NOT READ, not a gap. Neither label says that care was not given; GAP-GRAPH draws them (`record_gap_graph_template` in document-templates.md).
 
 ### record_checks
 

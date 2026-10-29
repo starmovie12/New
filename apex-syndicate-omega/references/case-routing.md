@@ -10,7 +10,7 @@ Sections in this file (the names are the tags other sections refer to):
 
 ## case_type_router
 
-Do not apply every module equally to every case. After intake set one primary case type (and any secondary ones) and activate only what it needs. Say the case types, forum status and active modules in one line at the start of Part 2; if the type changes later, say so and re-route. A case may carry several types; each type's checks apply to its own issues. Questions, rounds and tables the active types do not need are dropped, not left empty.
+Do not apply every module equally to every case. After intake set one primary case type (and any secondary ones) and activate only what it needs. Say the case types, forum status and active modules in one line at the start of Part 2; if the type changes later, say so and re-route. A case may carry several types; each type's checks apply to its own issues. Questions, rounds and tables the active types do not need are not run. Where a part promised such a table, it appears as one line, `LAGU NAHI — [case type does not need it]`, never as an empty table and never silently missing (delivery_protocol).
 
 - RECORDS_WITHHELD (refusal or delay in supplying records; records not kept): M1 and M2 lead (what was requested, when, how, proof of sending; source of the duty; forum). M3 only to say which records matter clinically. Skip clinical-detail rounds. Preservation priority applies at once.
 - RECORD_CONTENT (alleged alteration, back-filling, missing pages, conflicting versions): M1 leads (versions, lineage, audit trail, digital evidence checklist). Never infer tampering from absence or ink differences alone.
@@ -31,9 +31,9 @@ After the forum gate, set the STAGE of each proceeding (it can differ by PR-id) 
 | S1 Before any filing (records being collected) | records and preservation request, evidence list, decision on a legal notice | records_preservation_template, legal_notice_template | PRESERVATION, FILING |
 | S2 Legal notice sent, no reply yet | reply tracking, complaint readiness, limitation re-check | complaint_template | FILING |
 | S3 Complaint filed, opposite party's version awaited | service and appearance check, interim applications if needed, evidence plan | none yet | REPLY, HEARING |
-| S4 Version or reply received | paragraph-wise reading of the reply, contradiction and self-goal registers, rejoinder | rejoinder_template | EVIDENCE-AND-ARGUMENTS |
+| S4 Version or reply received | paragraph-wise reading of the reply (AUDIT-OPP: documentary_contradiction_audit), contradiction and self-goal registers, rejoinder | rejoinder_template | EVIDENCE-AND-ARGUMENTS |
 | S5 Evidence | evidence affidavit, document list and annexure index, decision on expert evidence | evidence_affidavit_template | EVIDENCE-AND-ARGUMENTS |
-| S6 Arguments | written arguments and hearing kit | written_arguments_template | EVIDENCE-AND-ARGUMENTS, HEARING |
+| S6 Arguments | Master Reference File for the advocate (REF-FILE), written arguments and hearing kit | master_reference_file_template, written_arguments_template | EVIDENCE-AND-ARGUMENTS, HEARING |
 | S7 Order passed | read the order against the record, options of appeal, review or revision, compliance and any deposit | appeal_memo_template, condonation_application_template | APPEAL, COMPLIANCE |
 
 ## side_and_scope

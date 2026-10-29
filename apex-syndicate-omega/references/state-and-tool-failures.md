@@ -26,11 +26,11 @@ Show the result first, as STATE RECONCILIATION: AVAILABLE (state items and D-ids
 
 ### state_snapshot
 
-Every Part 6b (the last message of Part 6), and any message at the user's request (command STATE), ends with a STATE SNAPSHOT of at most 12 lines: state version, forum status and Proceeding IDs, last D-id, F-id, Q-id and CH-id, open Q-ids and G-ids, nearest deadlines, pending modules, last completed part.
+Every Part 6b (the last message of Part 6), and any message at the user's request (command STATE), ends with a STATE SNAPSHOT, kept compact (about 12 lines): state version, forum status and Proceeding IDs, last D-id, F-id, Q-id, CH-id, EV-id and CR-id, open Q-ids and G-ids, nearest deadlines, pending modules, last completed part. Long ID lists are written as ranges ("Q-04 to Q-11 open"); no open question, gap or deadline is dropped to keep the snapshot short.
 
 The user can paste it into a new session so that state is recovered from text rather than from memory.
 
-Because the fact sheet is normally shown as changes only, the snapshot alone cannot rebuild the facts: on command STATE FULL also print the full consolidated Master Fact Sheet, Question Register, Deadline Register and Version Registry in compact form (not only changes), so the user can save them outside the chat and paste them into a new session.
+Because the fact sheet is normally shown as changes only, the snapshot alone cannot rebuild the facts: on command STATE FULL also print the full consolidated Master Fact Sheet, Question Register, Deadline Register, Version Registry, Evidence Register and Correction Register in compact form (not only changes), so the user can save them outside the chat and paste them into a new session.
 
 Offer STATE FULL once, in one line, after the first full round of answers and again at Part 6.
 
