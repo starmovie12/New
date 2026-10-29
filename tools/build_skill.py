@@ -33,7 +33,7 @@ ALLOWED = {"name", "description", "license", "allowed-tools", "metadata", "compa
 SNAKE = re.compile(r"(?<![\w/.-])([a-z][a-z0-9]*(?:_[a-z0-9]+)+)(?![\w(])")
 # snake_case words that are prose or file/field names, not section references
 NOT_SECTIONS = {
-    "test_scripts", "deadline_calc", "draft_lint", "ledger_total", "interval_calc",
+    "test_scripts", "deadline_calc", "draft_lint", "ledger_total", "interval_calc", "ref_file_lint",
     "proof_status", "double_count", "skill_name", "eval_name", "expected_output", "must_not",
 }
 
@@ -112,7 +112,8 @@ def check_references(texts):
     names = defined_names(texts)
     ref_files = {p.stem for p in (SKILL / "references").glob("*.md")}
     for p, t in texts.items():
-        body = re.sub(r"```.*?```", "", t, flags=re.S)
+        # blank out code blocks (templates) but keep their lines, so reported line numbers stay right
+        body = re.sub(r"```.*?```", lambda m: "\n" * m.group(0).count("\n"), t, flags=re.S)
         for n, line in enumerate(body.splitlines(), 1):
             for tok in SNAKE.findall(line):
                 if tok in NOT_SECTIONS or tok in names:

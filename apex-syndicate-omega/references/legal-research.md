@@ -19,7 +19,7 @@ Mandatory at intake and again whenever a notice, order, reply or file changes th
 2. Keep them in a Proceeding Register. For each record: forum, case or diary number, parties and their capacity, relief or action sought, stage, next date, source document, and FORUM STATUS: ESTABLISHED (shown by a filed paper, notice or order), PRESUMED (a working assumption, stated as such) or UNKNOWN.
 3. If the files do not establish the forum or proceeding, ask the user; do not guess it from the type of dispute.
 4. Rules attach to a proceeding, not to the case in general. Until a proceeding is ESTABLISHED, every Consumer Commission rule (limitation, written version, appeal period, pecuniary jurisdiction, prescribed forms, burden and standards) is labelled PRESUMED-FORUM. A rule from one forum is never carried to another; research the other forum's own provisions and mark them NOT VERIFIED until checked. Standards of negligence and conduct differ by forum (for example civil or consumer versus criminal versus disciplinary); do not import one into another.
-5. For parallel proceedings keep a separate Proceeding ID, deadline register, fact subset and draft for each, and flag cross-effects (admissions or orders in one affecting another, parallel-proceeding or election-of-remedy objections) for the advocate rather than deciding them.
+5. For parallel proceedings keep a separate Proceeding ID, deadline register, fact subset and set of POINTs for each, and flag cross-effects (admissions or orders in one affecting another, parallel-proceeding or election-of-remedy objections) for the advocate rather than deciding them.
 
 ### source_hierarchy
 
@@ -72,15 +72,15 @@ VERIFIED needs the primary text or the judgment itself opened in this session, m
 
 ### verification_fallback
 
-If an official site will not open, a judgment cannot be found, or only a summary is available: (1) try one alternative official route; (2) if still unresolved, record the Source type as it really is (secondary summary or none found), set the status NOT VERIFIED with the reason, and keep the point out of the court draft or plead it only in neutral terms without a citation; (3) CONTINUE the rest of the analysis with conditional wording where the unverified law matters, and add the item to the advocate checklist (what to check, where, for which date). A failed lookup never stops the workflow and never becomes a confident statement. Log the failure per the tool_failure_protocol.
+If an official site will not open, a judgment cannot be found, or only a summary is available: (1) try one alternative official route; (2) if still unresolved, record the Source type as it really is (secondary summary or none found), set the status NOT VERIFIED with the reason, and do not let a final argument line rest on it as settled: show it with its status and put it in the Verification list; (3) CONTINUE the rest of the analysis with conditional wording where the unverified law matters, and add the item to the advocate checklist (what to check, where, for which date). A failed lookup never stops the workflow and never becomes a confident statement. Log the failure per the tool_failure_protocol.
 
 ### user_supplied_copy
 
 If the user supplies a copy of an Act, rule, notification or judgment, read it: it is the best text available for what the provision says. It counts as a primary text only if it shows its official source and date (India Code or gazette print, court or Commission portal print) and you read the exact provision.
 
-Record the Source type as "user-supplied copy of official text" and keep the status NOT VERIFIED — USER COPY READ until the official source or the advocate confirms that the copy matches the version in force on the relevant date. A draft may then plead from it only with the "(verify citation before filing)" note.
+Record the Source type as "user-supplied copy of official text" and keep the status NOT VERIFIED — USER COPY READ until the official source or the advocate confirms that the copy matches the version in force on the relevant date. The Vakil File may then use it, always with that status beside it.
 
-Tell the user once that every draft stays "for counsel review" until that check is done; this is by design.
+Tell the user once that the advocate must confirm the copy against the official text; this is by design.
 
 ### legal_version_control
 
@@ -146,7 +146,7 @@ Keep one Deadline Register per proceeding (PR-id), with an ID (DL-xx) for each d
 
 For each deadline show: DL-id | Proceeding ID | Type | Trigger event, its date and source document | Provision and rule, in the version in force on the trigger date | Period | Calendar arithmetic with the inclusion or exclusion rule used | Resulting date | Alternative calculation where the start date or a "continuing cause of action" is arguable | Risk flag (SAFE / WATCH / DANGER / POSSIBLY EXPIRED) | Verification status | Advocate check required (always Y until the advocate confirms). Where the forum is not ESTABLISHED, mark every computed date PRESUMED-FORUM.
 
-Do not assume a legal notice, a records request or hospital correspondence extends a period. Where a complaint may be late, plan the condonation application and supporting affidavit grounds. Check forum-specific appeal provisions and recent amendments. Re-run the arithmetic before a date appears in any draft or pack. When code execution is available use `scripts/deadline_calc.py` for the arithmetic; it does not know the law, so the period, trigger and inclusion rule come from the verified provision. The three nearest deadlines, and every other deadline already overdue or within 30 days, go into the Deadline Summary of every message (critical_header in SKILL.md).
+Do not assume a legal notice, a records request or hospital correspondence extends a period. Where a complaint may be late, plan the condonation application and supporting affidavit grounds. Check forum-specific appeal provisions and recent amendments. Re-run the arithmetic before a date appears in the Vakil File. When code execution is available use `scripts/deadline_calc.py` for the arithmetic; it does not know the law, so the period, trigger and inclusion rule come from the verified provision. The three nearest deadlines, and every other deadline already overdue or within 30 days, go into the Deadline Summary of every message (critical_header in SKILL.md).
 
 ## legal_audit_protocol
 
@@ -156,7 +156,7 @@ Do not assume a legal notice, a records request or hospital correspondence exten
 - limitation and every other deadline through the deadline_engine, with the law as in force on each relevant date (legal_version_control)
 - proper parties and reliefs
 - cause of action
-- consumer and service status
+- consumer and service status (for a government, charitable or scheme hospital ask what was paid, by whom and under which scheme; the free-service question and its current status are in `anchors_checked_2026_10_23`, NOT VERIFIED)
 - burden of proof mapped issue by issue (it can differ across issues, and may shift where the hospital controls records, check res ipsa loquitur only on proper facts)
 - pleadings versus proof
 - admissibility (originals, certified copies, signatures, electronic record requirements as applicable, using the digital evidence checklist and the evidence regime that applies to the proceeding)

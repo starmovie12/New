@@ -3,6 +3,10 @@
 Sections in this file (the names are the tags other sections refer to):
 
 - `specialty_checklist_rules`
+- `emergency_and_cardiac_care`
+- `stroke_and_neurological_emergency`
+- `delayed_diagnosis_and_oncology`
+- `orthopaedic_and_trauma`
 - `obstetric_care`
 - `neonatal_and_paediatric_care`
 - `surgery_and_retained_items`
@@ -23,6 +27,30 @@ Use after the case type is set (case_type_router) and before any Benchmark Recor
 - A gap in the pages read is not a finding. Use the five labels (documented as done, documented as not done, not recorded in the pages read, and so on), RECORD GAP for a period with no entries and NOT READ for a page not read (`negative_findings_limit` in medical-audit.md), and turn the gap into a request for the missing record or a question for the expert, never into an accusation.
 - Records the user does not hold go on the evidence demand list with a preservation request (action plan in Part 4).
 - Clock sources matter: note which clock each entry, trace, monitor print and lab stamp comes from before comparing times.
+
+## emergency_and_cardiac_care
+
+- **Records to look for**: the triage record (arrival time, triage category as recorded, who triaged); the emergency case sheet; vital-sign entries; every ECG tracing itself with its machine time stamp (a note saying "ECG normal" is not the tracing); requests for cardiac markers and other tests with collection, receipt and report times; the time a senior doctor or specialist was called and the time they arrived; treatment orders and the drug chart with administration times; consent for any procedure; the notes behind the decision to admit, transfer, refer or discharge; ambulance and referral notes; CCTV and the EMR audit log for the emergency area (preservation at once).
+- **Timings to place**: arrival, triage, first doctor's review, first ECG and each repeat ECG, sample collection, report, specialist called, specialist arrived, treatment decision, treatment given, transfer or discharge.
+- **Questions for the real expert**: on the entries as they stand, what assessment, monitoring and escalation a reasonable emergency practitioner in this setting would have undertaken on that date; whether each tracing (not only its written reading) supports the recorded interpretation; whether the intervals between the recorded times could have changed the outcome, given the patient's condition on arrival; what other causes explain the outcome.
+
+## stroke_and_neurological_emergency
+
+- **Records to look for**: the time the patient was last known well, as recorded, and who gave it; arrival and triage; neurological examination entries and any scale scores as recorded; the imaging request, the scan time, the report time, and the images themselves; the treatment decision with its recorded reasons and consent; monitoring entries; referral or transfer notes.
+- **Timings to place**: last known well, arrival, first neurological assessment, imaging requested, imaging done, report, treatment decision, treatment given or transfer.
+- **Questions for the real expert**: what the recorded timings and findings meant for the treatment options open in this setting on that date; whether the facility or a referral route existed then; what other causes explain the outcome.
+
+## delayed_diagnosis_and_oncology
+
+- **Records to look for**: every outpatient or visit note with the symptoms recorded at that visit; tests advised, and whether and when they were done; reports with their dates; the follow-up advice given and how it was recorded; referral letters; the date the diagnosis was finally made and the stage recorded then; the patient's own attendance (missed or delayed visits).
+- **Timings to place**: first symptom recorded, each visit, each test advised and done, each result, each action taken, diagnosis.
+- **Questions for the real expert**: at each visit, what a reasonable practitioner would have considered on what was recorded then (`decision_context` in medical-audit.md, no hindsight); whether the delay changed the stage, the treatment open or the outcome (causation and counterfactual); what patient factors contributed.
+
+## orthopaedic_and_trauma
+
+- **Records to look for**: the injury history and mechanism as recorded; the examination; X-rays and other imaging with the images themselves; recorded checks of circulation and nerve function; operation notes and implant details; plaster, splint or traction checks; post-operative imaging; physiotherapy and follow-up notes; infection records.
+- **Timings to place**: injury, arrival, imaging, surgery, first sign of the complication, its recognition, the response.
+- **Questions for the real expert**: whether the injury or the complication was visible on the original images at the time they were taken; what monitoring for complications the records show; whether the outcome is a recognised complication that was disclosed, or a deviation (consent versus complication split); what other causes fit.
 
 ## obstetric_care
 

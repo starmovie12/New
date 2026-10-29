@@ -13,7 +13,7 @@ Sections in this file (the names are the tags other sections refer to):
 - `must_survive`
 - `full_legal_length`
 - `anti_padding_lint`
-- `draft_writing_rules`
+- `argument_writing_rules`
 - `user_requested_shortening`
 - `loss_check`
 - `tagda_commands`
@@ -36,7 +36,7 @@ POWER LINE = FACT — SOURCE — RECORD CHECK — LAW — CONSEQUENCE, each with
 - FACT (Tathya): what the record shows or does not show, as a concrete noun with a strong verb and the number, date or time inside it ("ECG [hh:mm] par likha hai", not "there seems to be some delay").
 - SOURCE: the document and the exact place: [D-03 p.4 (printed p.2)] or [Client Q-12, Round 2] (evidence_citation_format in evidence-and-facts.md). Every important statement also carries its source label (`source_labels`). A page or paragraph is cited only if the Reading Log records it as read. If the exact page or paragraph was not read or cannot be confirmed, write SATIK SROT-STHAN SATYAPIT NAHI and say what was read. Never invent a page, paragraph or line. No source, no finding: it becomes a question or an INFERRED line. Where the exact place comes from a summary or a Master File and not from the original, say so, label the statement SROT-SAAR (`source_labels`) and record it in the Reading Log and the Intake Register (`file_reading_and_evidence_protocol` in evidence-and-facts.md).
 - RECORD CHECK (Admission or Record): where the opponent's statement meets the record. Name the result with one label from `record_check_labels`. Give the opponent's own words (the shortest exact words) with their paragraph or annexure, and say where in the original written reply (Written Statement, written version or affidavit) they were read: the page and paragraph (`WS Location`), or `MOOL WS NAHI DEKHA` if the original was not seen. If only a summary of the reply was seen, write "Yeh virodhi ke mool jawab ka satyapit uddharan nahi hai" and label the statement SROT-SAAR. If no reply on the point is available, write "MOOL WRITTEN STATEMENT SE SATYAPAN AVASHYAK" and do not write what the reply probably says. If there is nothing to check for this finding, write "RECORD CHECK: LAGU NAHI — [reason]".
-- LAW (Kanoon): the rule, section, guideline or judgment the finding relies on, with its status (VERIFIED or NOT VERIFIED). State the proposition no wider than the provision or paragraph that was opened and read supports, for the same forum and date (`verification_chain` in legal-research.md), and name a pinpoint paragraph only if it was read. An authority remembered from memory, or known only from a summary, headnote or news report, is NOT VERIFIED: it goes to the advocate's checklist and not into a court-facing line (`verification_fallback` in legal-research.md). If the finding needs no legal basis yet, write "LAW: LAGU NAHI — [reason]". Law never sits inside the FACT sentence (`sentence_discipline`).
+- LAW (Kanoon): the rule, section, guideline or judgment the finding relies on, with its status (VERIFIED or NOT VERIFIED). State the proposition no wider than the provision or paragraph that was opened and read supports, for the same forum and date (`verification_chain` in legal-research.md), and name a pinpoint paragraph only if it was read. An authority remembered from memory, or known only from a summary, headnote or news report, is NOT VERIFIED: it is shown with that status, goes to the advocate's checklist, and no final argument line rests on it as settled (`verification_fallback` in legal-research.md). If the finding needs no legal basis yet, write "LAW: LAGU NAHI — [reason]". Law never sits inside the FACT sentence (`sentence_discipline`).
 - CONSEQUENCE (Parinaam, next step): what the finding changes for the case or what to do next, and what it does NOT prove. Drop the next step when the line is itself the action.
 - STATUS: one word from the standard vocabulary (P12, fact_model, forum status) beside the FACT, the RECORD CHECK and the LAW. The label replaces a hedging sentence. The SOURCE also carries its source label (`source_labels`) and the RECORD CHECK its record-check label (`record_check_labels`); a label does not replace the status word.
 
@@ -70,7 +70,7 @@ Rules for using the labels:
 2. The FACT status of a power line is never stronger than its label allows.
 3. A page or paragraph is cited only if the Reading Log records it as read. A page that was not read is NOT READ, and no statement of content or absence is made about it. Never invent a page, paragraph or line.
 4. Where the sources are silent, write the gap ("UNRESOLVED — [what is missing]"). A gap is not filled with an assumption.
-5. The labels are working labels. They are not printed in a court draft (`draft_writing_rules`).
+5. The labels stay in the Vakil File, so the advocate sees how far each statement can be trusted (`argument_writing_rules`).
 
 ## record_check_labels
 
@@ -112,7 +112,7 @@ Allowed and expected:
 - plain sharp verbs for what the record shows: "admitted" (swikar kiya), "denied" (nakara), "did not reply" (jawab nahi diya), "does not record" (record mein nahi hai), "contradicts" (viparit hai);
 - a number for an adjective: the date, the interval, the amount, the page.
 
-Language rule: explanations to the user, tables, graphs and summaries are in the chat language (`draft_language` in strategy-and-drafting.md): simple Hinglish (Roman Hindi) by default for a user who writes Hindi or Hinglish, otherwise the user's own language, in short sentences, with a hard word explained in brackets the first time only. Statute sections, medical test names and judgment names stay in English. A pleading, or any text meant for filing, is in English by default and never in Roman Hinglish; Hindi (Devanagari) or the state language only if the forum or advocate confirms it is accepted (`draft_language` in strategy-and-drafting.md). In Hinglish use simple spoken words and keep English legal and medical terms as they are.
+Language rule: explanations to the user, the Vakil File, tables, graphs and summaries are in the chat language (`file_language` in strategy-and-vakil-file.md): simple Hinglish (Roman Hindi) by default for a user who writes Hindi or Hinglish, otherwise the user's own language, or English when the user or the advocate asks; short sentences, with a hard word explained in brackets the first time only. Statute sections, medical test names and judgment names stay in English. The words of a record, order or reply are quoted in their own language with a translation beside them. In Hinglish use simple spoken words and keep English legal and medical terms as they are.
 
 Devices that add force without adding length: a status label for a hedge; an ID and page for a quotation; a number for an adjective; a colon for a list; a strong verb and a concrete noun; active voice.
 
@@ -154,16 +154,16 @@ These are never removed, softened, merged away or upgraded, whatever the length 
 - status labels and flags: NOT VERIFIED, PRESUMED-FORUM, PROVISIONAL, CLIENT-REPORTED, DISPUTED and the rest of the vocabulary, and the labels RECORD GAP and NOT READ; the source label of each important statement (`source_labels`), the record-check label (`record_check_labels`), and the place in the original (page, paragraph or line) or the words SATIK SROT-STHAN SATYAPIT NAHI;
 - words that change meaning: not, no, never, only, except, unless, before, after, at least, at most, alleged, admitted, denied, and "recorded" against "done";
 - the difference between an Express Admission, an Express Denial and No Reply, and the difference between "not recorded in the pages read" and "did not happen"; both versions of a disputed point, each with its source, its place and its mark (DISPUTED or UNRESOLVED);
-- legal grounds, the authority each one relies on with its verification status, limitation and jurisdiction points, caveats and conditions ("if the forum allows"), the prayer and its ledger link, the verification clause and every procedural safeguard;
+- legal grounds, the authority each one relies on with its verification status, limitation and jurisdiction points, caveats and conditions ("if the forum allows"), the relief asked and its ledger link, and every procedural safeguard;
 - the medical detail a finding depends on: the value, the unit, the time, the benchmark and the expert question;
 - deadlines with their risk flag, preservation risks, the critical header, the Completion Gate, Open Gaps, the Audit Trail Table of a final text (`full_legal_length`), and the advocate-review reminder where the rules place it;
 - anything the user must do or decide next.
 
-An edit may improve the precision of any of these but never drops one. Traps: merging two findings with different statuses into one; dropping a "not"; turning "client says" into a fact; dropping the clock note; replacing a number with an adjective; moving a NOT VERIFIED flag into a footnote far from its claim; shortening an ID until it is ambiguous; losing a condition ("if the forum allows"); reading a procedural order as an admission or as a finding on merits; presenting a statement from a summary as if it were read from the original; choosing one of two conflicting versions without a reason shown; writing an estimate as the amount that will be awarded. In a court draft the labels and status words are kept in the registers, the Traceability Map and the advocate's notes and are not printed in the pleading text (`draft_writing_rules`).
+An edit may improve the precision of any of these but never drops one. Traps: merging two findings with different statuses into one; dropping a "not"; turning "client says" into a fact; dropping the clock note; replacing a number with an adjective; moving a NOT VERIFIED flag into a footnote far from its claim; shortening an ID until it is ambiguous; losing a condition ("if the forum allows"); reading a procedural order as an admission or as a finding on merits; presenting a statement from a summary as if it were read from the original; choosing one of two conflicting versions without a reason shown; writing an estimate as the amount that will be awarded. In the Vakil File the labels and status words stay beside their statements (`argument_writing_rules`).
 
 ## full_legal_length
 
-This file sets no limit on words, lines, table cells, table rows or questions. Court drafts, arguments, registers and analysis are written in the full legal length the point needs. The goal is completeness, not length: a text is complete when every fact, source, ground, medical detail, limitation, caveat, prayer and procedural safeguard that bears on the point is present once, in the right place.
+This file sets no limit on words, lines, table cells, table rows or questions. The Vakil File, its arguments, registers and analysis are written in the full legal length the point needs. The goal is completeness, not length: a text is complete when every fact, source, ground, medical detail, limitation, caveat, prayer and procedural safeguard that bears on the point is present once, in the right place.
 
 Completeness test before sending anything:
 
@@ -172,7 +172,7 @@ Completeness test before sending anything:
 3. Are registers, ledgers and tables complete, with every row shown (highest severity first, every HIGH or critical row marked)? A row is never hidden behind "more rows".
 4. Was anything cut only to make the text shorter? If so, put it back.
 5. Is anything left out on purpose? Mark the place `[OMITTED — reason]`. Nothing is dropped silently.
-6. For a final argument, a reference file for the advocate or any other finished text: is the Audit Trail Table at its end, with its six categories (verified facts, unverified claims, missing documents, contradictions and UNRESOLVED points, legal authorities needing verification, questions for counsel) each filled or marked "KOI NAHI — [reason]"? A final text without it is incomplete (`audit_trail_table` in document-templates.md). Beside a court draft the table is advocate's material and is not printed in the pleading (`draft_writing_rules`).
+6. For the Vakil File: is the Audit Trail Table at its end, with its six categories (verified facts, unverified claims, missing documents, contradictions and UNRESOLVED points, legal authorities needing verification, questions for counsel) each filled or marked "KOI NAHI — [reason]"? A Vakil File without it is incomplete (`audit_trail_table` in document-templates.md).
 
 If a reply cannot fit in one message, stop at a clean break and use the continuation marker of `delivery_protocol` ("[CONTINUE FROM: section name, paragraph ID]"). The guarantee is no silent truncation, not that everything fits in one message. A text that will run over several messages opens with an Output Plan (its sections and the number of parts), each part ends with what remains and whether the text continues or is complete, and the last part ends with a Completeness Check of the planned sections against the delivered ones; the marker wording is set in `delivery_protocol` (SKILL.md).
 
@@ -189,7 +189,7 @@ Cut these, because they add nothing:
 - preambles and sign-offs, the question restated, rules recited back to the user, recaps of what was already delivered;
 - a register row, document or authority already delivered in full: point to it by its ID ("see [D-03 p.4]", "see POINT N") and write only the new fact or the new argument at the new place;
 - adjectives with no number behind them, stacked hedges, empty or repeated tables;
-- a fact stated twice in one document, unless the law requires the repetition (for example a verification clause).
+- a fact stated twice in the file, unless a second POINT needs it; then cite it ("POINT N dekho", the EV-id) rather than repeating it.
 
 Never cut under this lint: anything in `must_survive`, a required part of a document, an averment a ground needs, a status label, a caveat or a limit. If a cut would remove one of these, keep it.
 
@@ -197,25 +197,23 @@ Strike-out test: remove a word or phrase. If the sentence still carries the same
 
 A sub-field with nothing to report is one line ("LAGU NAHI — [reason]"), not a row of blanks. The heading stays so that the structure stays visible.
 
-## draft_writing_rules
+## argument_writing_rules
 
-For text that goes into a file, pleading, affidavit, notice or application:
+For the final argument line of each POINT (part 5, VAKIL KE LIYE ANTIM DALIL), the hearing notes, and any SUGGESTION wording in a draft review. These lines are written for the advocate to use in their own words; they are not filing text (core rule 11).
 
-- One proposition per numbered paragraph. A fact chain that cannot be split stays together in one paragraph. Lead with the fact and put the annexure inline: "(A-03, p.4)".
-- State a fact once. Later paragraphs refer to it as "para N above" only if that paragraph exists (output_integrity_gate, numbering and cross-references).
-- "It is submitted that" only for an inference or a submission on law, in a separate sentence from the facts (`sentence_discipline`). Facts are pleaded as facts.
+- One proposition per line. A fact chain that cannot be split stays together. Lead with the fact and put its source inline: the EV-id and the document page as the court record shows it ("EV-012; A-03, p.4").
+- State a fact once in the file. Later points refer to it ("POINT 2 dekho", "EV-012") only if that point or item exists.
+- "Yeh dalil di ja sakti hai ki" / "It can be submitted that" only for an inference or a point of law, in a separate sentence from the facts (`sentence_discipline`). Facts are stated as facts only when they are SROT-SAMARTHIT TATHYA; a statement known only from a summary stays SROT-SAAR and is marked so; a fact within the complainant's own knowledge is marked CLIENT-REPORTED and listed as needing documentary support.
 - No adjectives of emotion and no taunt (`language_guard`): use the date, the interval or the amount.
-- Never leave out: an averment that the cause or a ground needs, the verification clause, an annexure reference, the prayer and its ledger link, any date, time, amount or name, a placeholder "[____ to be filled by user]". If an edit would drop one of these, keep it and flag it.
-- Internal labels do not go into the court draft (`core_rules_card`: no internal tags; the cleanliness check in `output_integrity_gate`). Source labels, status words, D-, F- and X- IDs, RECORD GAP and NOT READ stay in the registers, the Traceability Map and the advocate's notes. The draft carries annexure IDs with pages ("A-03, p.4") and only the bracketed notes that the ADVOCATE COPY allows. The discipline behind the labels still binds the draft: a fact is pleaded as a fact only if it is SROT-SAMARTHIT TATHYA; an inference is pleaded as a submission; a statement known only from a summary is left out until the original page is read, or, if it is within the complainant's own knowledge, pleaded as such and listed for the advocate as needing documentary support.
-- The required_parts of the document and the draft_language still apply (strategy-and-drafting.md). The draft is as long as the law and the facts need.
-- Wording changes are Language or Structure changes in the Change Register. Removing a fact, ground, amount, relief or averment is a Substantive change and needs the user's confirmation (edit_mode_protocol).
+- Never leave out: the ground or averment the point needs, its source, any date, time, amount or name, the relief and its ledger link, the authority with its status, and the limit of what the point proves. If an edit would drop one of these, keep it and flag it.
+- The labels stay in the Vakil File: the advocate needs to see how far each line can be trusted. Wording changes are Language or Structure changes; removing a fact, ground, amount or relief is a Substantive change and needs the user's confirmation.
 
 ## user_requested_shortening
 
-Only when the user asks in plain words ("chhota karo", "shorten this", "summary do", "N line mein"). It is never the default, and it is never applied to a court draft unasked. When the user hands over a long text or file and asks to shorten it:
+Only when the user asks in plain words ("chhota karo", "shorten this", "summary do", "N line mein"). It is never the default, and it is never applied to the Vakil File unasked. When the user hands over a long text or file and asks to shorten it:
 
 1. Give the Reading Log first (how much was read, what was not).
-2. Work as Edit Mode on the user's own text: map each paragraph to its point, merge paragraphs that make the same point, write the result as numbered paragraphs in the user's voice. Everything in `must_survive` stays.
+2. Work on a new version of the text: map each paragraph to its point, merge paragraphs that make the same point, write the result as numbered paragraphs in the user's voice. Everything in `must_survive` stays. For the user's own court draft, give a shortening plan for the advocate instead of a rewritten draft (`draft_review` in strategy-and-vakil-file.md).
 3. If the user names a number of lines N, use it when what must survive fits. If it does not fit, say so in one line and give the smallest N that holds it.
 4. End with the LOSS CHECK (`loss_check`). The shortened text is a new version in the Version Registry; the original stays untouched.
 
@@ -225,7 +223,7 @@ When the user says an earlier answer was too long: rewrite that answer in place,
 
 After any shortening the user asked for (`user_requested_shortening`), show three labelled parts:
 
-- KEPT: the counts of what must survive that are present in both versions, for example "7 dates, 3 amounts, 12 IDs, all 5 status labels, every source label, every negation, all grounds and the prayer".
+- KEPT: the counts of what must survive that are present in both versions, for example "7 dates, 3 amounts, 12 IDs, all 5 status labels, every source label, every negation, all grounds and the relief".
 - CUT: the kinds of text removed (preamble, repeated facts, adjectives).
 - NEEDS YOUR OK: any change that touches a fact, date, amount, ground, relief or averment, or "none".
 
@@ -236,14 +234,14 @@ Count before you write the KEPT part: list the dates, times, amounts, IDs and la
 These definitions are the source for the command lines in `SKILL.md` (`mode_precedence_and_commands`).
 
 - TAGDA (also "tagda karo", "aur mazboot karo"): rewrite the last answer, or the text or file the user supplies, for Maximum Legal Force and Evidentiary Precision. Every finding takes the power line form, claims are separated (`sentence_discipline`), each important statement carries its source label (`source_labels`), wording sits on the ladder (`language_ladder`), the guard is applied (`language_guard`) and padding is removed (`anti_padding_lint`). The text does not become shorter by rule: nothing from `must_survive` is dropped and no new fact is added. Then list what was strengthened and what was flagged as unsupported, including every statement known only from a summary. If the earlier answer is not visible (principle P15, ONLY_WHAT_IS_VISIBLE, and the state-first rule), say so in one line and ask the user to paste it.
-- SHORT: add an Executive Snapshot above the full text. The snapshot is a few power lines that carry the findings, the deadlines and the next action, each with its status. The full text stays below it, unchanged. SHORT never replaces, halves or drops anything. These stay in the output: the state line and state reconciliation, the critical header, key dates and deadlines, the Judge's top weaknesses, NOT VERIFIED flags, Open Gaps, the Completion Gate and the advocate-review reminder.
+- SHORT: add an Executive Snapshot above the full text. The snapshot is a few power lines that carry the findings, the deadlines and the next action, each with its status. The full text stays below it, unchanged. SHORT never replaces, halves or drops anything. These stay in the output: the state line and state reconciliation, the critical header, key dates and deadlines, the Judge's top weaknesses, NOT VERIFIED flags, Open Gaps, the Completion Gate, the advocate-review reminder, the Vakil File, the Change Register and the Verification Checklist.
 - DETAIL <id, section or part>: open that one item in full (every source, status and legal basis), rebuilt from the registers that are visible. DETAIL ALL: every item in full until the next TAGDA or SHORT. If the item is not visible, say so in one line and ask the user to paste it. Never rebuild from memory.
 - Shortening on request ("chhota karo", "summary do", "N line mein") is not a TAGDA command: see `user_requested_shortening`. The older form "TAGDA N" (a number after the word TAGDA) is read the same way: the TAGDA work above, plus a request to shorten to N lines under `user_requested_shortening`. N is a request and not a cap: if what must survive does not fit in N lines, say so in one line, give the smallest N that holds it, and write at that N with the LOSS CHECK (`loss_check`).
 - Default for every message with no command: full legal length in power lines (`full_legal_length`). In plain words: TAGDA means poora dum, saboot ke saath.
 
 ## power_line_examples
 
-ILLUSTRATIVE ONLY. Every ID, date, time, value and name below is a [PLACEHOLDER]. Never copy a value, an ID or a sentence from these examples into a case output. In a real case every value comes from that case's own sources. Each example names its language: Hinglish for chat, tables and summaries; English for a pleading.
+ILLUSTRATIVE ONLY. Every ID, date, time, value and name below is a [PLACEHOLDER]. Never copy a value, an ID or a sentence from these examples into a case output. In a real case every value comes from that case's own sources. Each example names its language: Hinglish for chat, tables, summaries and the Vakil File; English where the advocate wants an argument line in English.
 
 1. A finding in the five-part form (Hinglish chat).
    - FACT: Discharge summary mein "[test] normal" likha hai [D-[nn] p.[n]] — DOCUMENTED (summary ki entry).
@@ -272,15 +270,15 @@ ILLUSTRATIVE ONLY. Every ID, date, time, value and name below is a [PLACEHOLDER]
    - BUNDLED: "Could you please describe in as much detail as you can recall what happened on the day of admission, who you spoke to, what they said and whether any consent form was signed?"
    - SPLIT: "Admission ke din kis doctor ne kya bola? Naam (ya 'pata nahi') aur tareekh likho. [Q-[nn]] (Kyun: unke bayaan ko record se milana hai.)" and "Procedure se pehle kaun sa form sign hua, kisne samjhaya, kis bhasha mein? [Q-[nn]]"
 
-7. A pleading paragraph: force without emotion (English).
+7. An argument line for the advocate: force without emotion (English, for an advocate who wants the file in English).
    - WEAK: "That the complainant most respectfully submits that when he took the patient to the opposite party hospital with chest pain, the hospital, instead of immediately conducting an ECG as was required, made the patient wait for a considerable time before any examination was done, which is clearly a deficiency in service."
-   - STRONG: "On [date] at [hh:mm] the complainant brought the patient to the hospital with chest pain (A-[nn], p.[n]). The first ECG is recorded at [hh:mm] (A-[nn], p.[n]). The interval between the two recorded times is [N] minutes. It is submitted that [protocol or guideline, named as in the Citation Registry] required [step] within [period], and that this interval exceeded it."
-   - WHY: "as was required" and "clearly a deficiency" were conclusions with no benchmark behind them. They were replaced by the two recorded times, the computed interval and a separate submission that names its basis. The status of that basis stays in the Citation Registry and the advocate's checklist, not in the pleading text. The strong version is not shorter than the weak one, and it is harder to rebut.
+   - STRONG: "On [date] at [hh:mm] the complainant brought the patient to the hospital with chest pain (EV-[nnn]; A-[nn], p.[n]). The first ECG is recorded at [hh:mm] (EV-[nnn]; A-[nn], p.[n]). The interval between the two recorded times is [N] minutes. It is submitted that [protocol or guideline, named as in the Citation Registry] required [step] within [period], and that this interval exceeded it."
+   - WHY: "as was required" and "clearly a deficiency" were conclusions with no benchmark behind them. They were replaced by the two recorded times, the computed interval and a separate submission that names its basis. The status of that basis is shown beside it in the file and in the Citation Registry. The strong version is not shorter than the weak one, and it is harder to rebut.
 
 8. Language guard (English).
    - WEAK: "The hospital showed shocking and heartless negligence."
    - STRONG: "The record supplied to the complainant (A-[nn], pp.[n]–[m]) contains no entry between [hh:mm] and [hh:mm]. The complainant's case is that [specific deviation]; whether it breached the standard of care is a question for the expert."
-   - NOTE: in the registers and in chat the same point is labelled RECORD GAP (ladder step 2). The label and the D- ID are not printed in the pleading.
+   - NOTE: in the Vakil File the same line carries its label, RECORD GAP (ladder step 2), and its EV-id, so the advocate sees what it does and does not prove.
 
 9. "Aapke liye saar" (Hinglish; its length rules are in `output_format` in output-gates.md): "Kya mila: [source A] aur [source B] mein [event] ka time alag hai ([hh:mm] aur [hh:mm]) [D-[nn], D-[nn]] — DISPUTED. Iska matlab: 'deri' ka point tab tak kamzor hai jab tak original record na aaye. Abhi karo: hospital ko original record aur machine time ki written request bhejo. Pakka nahi: standard of care (expert chahiye)."
 

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
-"""Self-test for the four scripts. Run: python3 scripts/test_scripts.py"""
+"""Self-test for the five scripts. Run: python3 scripts/test_scripts.py"""
 import json, os, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+GOOD_VAKIL_FILE = 'FILE CHECKED WITH FLAGS — 2 items for the advocate | VR-03\n\nKUL POINTS KI SANKHYA: Is file mein kul 2 alag-alag kanooni aur medical points hain.\nFILE KA MAQSAD: Yeh Master Reference File isliye banayi gayi hai taaki Vakil Sahab court file khud taiyar kar sakein.\n\n## JEETNE WALE BADE POINTS\n| Rank | POINT | Ek line | Element | Taakat | Saboot | Virodhi ka jawab | Kya majboot karega |\n|---|---|---|---|---|---|---|---|\n| 1 | POINT 1 | ECG 50 minute baad | Breach | Strong: do recorded times | EV-001; A-1 p.2 | monitoring hui (forecast) | ECG machine log |\n| 2 | POINT 2 | Nursing chart mein gap | Breach | Moderate | EV-002 | entries kho gayi (forecast) | original chart |\n\n🟨 **POINT 1: ECG mein deri**\n**ELEMENT TAG:** Breach\n**1. HAMARI BAAT / AAROP:** Arrival 23:50, ECG 00:40 (EV-001; A-1, p.2).\n**2. VIRODHI (Hospital H) KA JAWAB** [WS-MOOL-TEXT] [WS Location: p.3 para 7, poora para padha]: "ECG was done promptly."\n**3. HAMARA JAWAB:** RECORD KE VIPARIT — Contradiction, X-01.\n**4. KANOONI AADHAR AUR SABOOT:** EV-001; standard NOT VERIFIED.\n**5. VAKIL KE LIYE ANTIM DALIL:** Yeh dalil di ja sakti hai ki ... | RELIEF + SEEMA: RH-01 ke saath.\n\n🟨 **POINT 2: Nursing chart gap**\n**ELEMENT TAG:** Breach, Causation\n**1. HAMARI BAAT / AAROP:** 01:00 se 04:30 tak entries nahi (EV-002).\n**2. VIRODHI KA JAWAB** [JAWAB UPLABDH NAHI — MOOL WS SE SATYAPAN AVASHYAK] [WS Location: WS pp.1-9 padhe, is point par kuch nahi]\n**3. HAMARA JAWAB:** No Reply. POINT 1 dekho.\n**4. KANOONI AADHAR AUR SABOOT:** LAGU NAHI — expert ki rai baaki.\n**5. VAKIL KE LIYE ANTIM DALIL:** RECORD GAP, step 2 | RELIEF + SEEMA: LAGU NAHI — alag relief nahi.\n\n## HAMARI KAMZORIYAN AUR UNKA ILAAJ\nLAGU NAHI — abhi koi nahi mili.\n## VIRODHI KE JAWAB KI JAANCH\nPara 7: Contradiction.\n## TIMELINE AUR RECORD GAPS\ngraph\n## EXPERT KE LIYE SAWAL\ncardiologist\n## ABHI KYA CHAHIYE\nECG machine log\n## RAKAM\nRH-01\n## KANOON JO VAKIL KO VERIFY KARNA HAI\nC-01 NOT VERIFIED\n## HEARING NOTES\npitch\n## AGLE DOCUMENT KE LIYE MATERIAL\nmaterial_for_rejoinder\n## AUDIT TRAIL TABLE\n| Category | Entries |\n|---|---|\n| Verified facts (satyapit tathya) | EV-001 |\n| Unverified claims (satyapan baaki) | KOI NAHI — sab mool se dekhe |\n| Missing documents | ECG machine log |\n| Contradictions and UNRESOLVED points | X-01 |\n| Legal authorities needing verification | C-01 |\n| Questions for counsel (vakil se sawal) | Q-1 |\n'
 
 
 def run(*args):
@@ -91,6 +94,31 @@ def main():
         open(p3, "w", encoding="utf-8").write("RH-id,Head,Amount,Amount supported\nRH-01,Refund,50000,70000\n")
         r = run(f"{HERE}/ledger_total.py", p3)
         ok &= check("supported above claimed flagged", "more than the amount claimed" in r.stdout and r.returncode == 1, r.stdout)
+        # ledger_total: formula check
+        p4 = os.path.join(t, "l4.csv")
+        open(p4, "w", encoding="utf-8").write(
+            "RH-id,Head,Amount claimed,Formula\n"
+            "RH-01,Loss of dependency,5040000,45000*12*(1-1/3)*14\n"
+            "RH-02,Interest,45000,\"2,50,000 x 9% x 2\"\n"
+            "RH-03,Interest,33333,100000/3\n"
+            "RH-04,Mental agony,300000,lump sum\n")
+        r = run(f"{HERE}/ledger_total.py", p4)
+        ok &= check("formula with fraction matches", "RH-01: 45000*12*(1-1/3)*14 = ₹50,40,000.00 — MATCH" in r.stdout, r.stdout)
+        ok &= check("formula with x and % matches", "RH-02: 2,50,000 x 9% x 2 = ₹45,000.00 — MATCH" in r.stdout, r.stdout)
+        ok &= check("rounding is noted, not flagged", "RH-03" in r.stdout and "rounded" in r.stdout and r.returncode == 0, r.stdout)
+        ok &= check("prose formula is noted as not checked", "RH-04: formula 'lump sum' is not plain arithmetic" in r.stdout, r.stdout)
+        p5 = os.path.join(t, "l5.csv")
+        open(p5, "w", encoding="utf-8").write("RH-id,Head,Amount,Formula\nRH-01,Loss of dependency,504000,45000*12*(1-1/3)*14\nRH-02,Bad,10,__import__('os')\n")
+        r = run(f"{HERE}/ledger_total.py", p5)
+        ok &= check("formula mismatch flagged", "MISMATCH with amount ₹5,04,000.00" in r.stdout and r.returncode == 1, r.stdout)
+        ok &= check("code in a formula is refused, not run", "RH-02: formula" in r.stdout and "not plain arithmetic" in r.stdout, r.stdout)
+        # interval_calc: separate date and time columns
+        e2 = os.path.join(t, "e2.csv")
+        open(e2, "w", encoding="utf-8").write("date,time,event\n2026-03-05,11:50 PM,arrival\n2026-03-06,00:40,ECG\n2026-03-06,04/05,bad\n")
+        r = run(f"{HERE}/interval_calc.py", "--entries", e2, "--gap-minutes", "30", "--json")
+        d = json.loads(r.stdout)
+        ok &= check("date and time columns joined across midnight", [g["minutes"] for g in d["gaps"]] == [50], d)
+        ok &= check("unparseable time reported with its line", any("line 4" in x for x in d["problems"]) and r.returncode == 1, d)
         # draft_lint
         good = os.path.join(t, "good.md")
         open(good, "w", encoding="utf-8").write(
@@ -116,6 +144,50 @@ def main():
         r = run(f"{HERE}/draft_lint.py", lab)
         for needle in ["RECORD GAP", "SROT-SAMARTHIT TATHYA", "WS-MOOL-TEXT", "WS Location", "EV-004"]:
             ok &= check(f"detects label in a pleading: {needle}", needle in r.stdout and r.returncode == 1, r.stdout)
+        # draft_lint on a para-wise rejoinder: the written version's paragraphs, inline annexures, the other side's annexures
+        rej = os.path.join(t, "rejoinder.md")
+        open(rej, "w", encoding="utf-8").write(
+            "1. The contents of para 1 of the written version are denied (A-1, p.2).\n"
+            "2. In reply to para 7 of the written version, the first ECG is recorded later (A-2, p.1).\n"
+            "3. In reply to paragraphs 9 to 12 of the WS, see para 2 above and the OP's own chart (Annexure R-3).\n"
+            "4. As stated in para 6 above, nothing more.\n")
+        idx2 = os.path.join(t, "idx2.txt")
+        open(idx2, "w", encoding="utf-8").write("A-1\nA-2\n")
+        r = run(f"{HERE}/draft_lint.py", rej, "--annexures", idx2)
+        out = r.stdout
+        ok &= check("written version paragraphs are not our paragraphs", "paragraph 7" not in out and "paragraph 9" not in out and "paragraph 12" not in out, out)
+        ok &= check("our own dangling paragraph still caught", "refers to paragraph 6, which does not exist" in out, out)
+        ok &= check("inline (A-1, p.2) counts as cited", "annexures indexed but never cited: none" in out, out)
+        ok &= check("other party's annexure is a warning", "WARN: annexures of another party or series not in our index (check each is on the record): R-3" in out, out)
+    # ref_file_lint: a well-formed Vakil File passes; a broken one fails on each defect
+    with tempfile.TemporaryDirectory() as t:
+        gf = os.path.join(t, "vakil_good.md")
+        open(gf, "w", encoding="utf-8").write(GOOD_VAKIL_FILE)
+        ev = os.path.join(t, "ev.txt")
+        open(ev, "w", encoding="utf-8").write("EV-001\nEV-002\n")
+        r = run(f"{HERE}/ref_file_lint.py", gf, "--evidence", ev)
+        ok &= check("well-formed Vakil File passes", r.returncode == 0 and "EV-ids not in the Evidence Register: none" in r.stdout, r.stdout)
+        bad = (GOOD_VAKIL_FILE
+               .replace("FILE CHECKED WITH FLAGS — 2 items for the advocate | VR-03", "VR-03")
+               .replace("kul 2 alag-alag", "kul 3 alag-alag")
+               .replace("[WS Location: p.3 para 7, poora para padha]", "[WS Location: MOOL WS NAHI DEKHA]")
+               .replace("**4. KANOONI AADHAR AUR SABOOT:** LAGU NAHI — expert ki rai baaki.\n", "")
+               .replace("No Reply. POINT 1 dekho.", "No Reply. POINT 5 dekho. Hospital ne jhooth bola. [yahan likho]")
+               .replace("## HEARING NOTES\npitch\n", "")
+               .replace("| Missing documents | ECG machine log |", "| Missing documents |  |")
+               .replace("| Questions for counsel (vakil se sawal) | Q-1 |\n", "")
+               + "\nBEFORE THE DISTRICT CONSUMER DISPUTES REDRESSAL COMMISSION\nPRAYER\nThis file is ready to file.\n")
+        bf = os.path.join(t, "vakil_bad.md")
+        open(bf, "w", encoding="utf-8").write(bad)
+        r = run(f"{HERE}/ref_file_lint.py", bf, "--evidence", ev)
+        out = r.stdout
+        ok &= check("broken Vakil File fails", r.returncode == 1, out)
+        for needle in ["status line: missing", "banner says 3 points but the file has 2", "WS-MOOL-TEXT needs a WS Location",
+                       "POINT 2: five parts missing or out of order: 4 KANOONI AADHAR AUR SABOOT", "points to missing POINTs: [5]",
+                       "section missing: hearing notes", "category 'missing documents' is empty", "category missing: questions for counsel",
+                       "unfilled template slots: [yahan likho]", "filing text (core rule 11): BEFORE THE DISTRICT", "calls itself filing-ready or ready to file",
+                       "strong words to check against the language ladder"]:
+            ok &= check(f"Vakil File lint detects: {needle}", needle in out, out)
     print("ALL PASSED" if ok else "SOME FAILED")
     sys.exit(0 if ok else 1)
 

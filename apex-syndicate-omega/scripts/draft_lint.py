@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Pattern-based cross-reference checks on a draft (plain text or markdown). Standard library only.
+"""Pattern-based checks on a draft that the user or their advocate wrote (plain text or markdown).
+Standard library only. The skill itself writes no draft for filing; this script supports
+draft_review (strategy-and-drafting.md): numbering and cross-references, annexures, and
+cleanliness (internal IDs, status words, persona names and Vakil File labels pasted into the draft).
+It matches patterns; it does not understand the draft, so a PASS is not a legal or factual check.
 
-It supports gates 2 (numbering and cross-references), 4 (annexures) and 8 (cleanliness: internal IDs,
-status words, persona names and the working labels of power-lines.md) of the
-output_integrity_gate. It matches patterns; it does not understand the draft, so a PASS is not a
-legal or factual check and the gate's own judgment still applies.
+A reference to another document's paragraph ("para 7 of the written version", "paragraphs 9 to 12
+of the WS") is not one of the draft's own paragraphs and is not checked against its numbering.
+Annexures are counted when written "Annexure A-3" or inline as the skill drafts them, "(A-3, p.4)";
+inline ids count only for the annexure series of the index (A- when no index is given). An id from a
+series the index does not use (for example the opposite party's R-3) is reported as another party's
+annexure, not as a failure.
 
   draft_lint.py draft.md --annexures index.txt --copy advocate
   draft_lint.py draft.md --copy clean --stop-at "^(LIST OF ANNEXURES|VERIFICATION)"
@@ -14,6 +20,9 @@ from collections import defaultdict
 
 NUM = re.compile(r"^\s{0,3}(\d{1,3})[.)]\s+\S")
 PARA_REF = re.compile(r"\bparas?(?:graphs?)?\.?\s+(\d{1,3}(?:\s*(?:,|and|&|to|-|–)\s*\d{1,3})*)", re.I)
+OTHER_DOC = re.compile(r"\s*,?\s*(?:of|in|under)\s+(?:the\s+)?(?:(?:opposite\s+part(?:y|ies)|op|respondents?|complainants?|appellants?)(?:'s|’s|s')?\s+)?"
+                       r"(?:written\s+version|written\s+statement|w\.?\s?s\b\.?|reply|complaint|order|affidavit|judge?ment|version|notice|application|petition|memo|appeal|rejoinder|report|evidence)", re.I)
+INLINE_ANX = re.compile(r"\(\s*([A-Z]{1,2}-\d{1,3}(?:\s*(?:,|and|&|to|–|-)\s*[A-Z]{1,2}-\d{1,3})*)\s*(?=[,;)]|\s+pp?\.)")
 PRAYER_REF = re.compile(r"\bprayer\s*(?:clause\s*)?\(([a-z])\)", re.I)
 LABEL = re.compile(r"^\s*\(([a-z])\)\s")
 ANX_REF = re.compile(r"\bAnnexures?\s+((?:[A-Z]{1,2}-?\d{1,3})(?:\s*(?:,|and|&|to|-|–)\s*[A-Z]{0,2}-?\d{1,3})*)", re.I)
@@ -51,7 +60,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("draft")
     ap.add_argument("--annexures", help="text file listing the master annexure index (one id per line, e.g. A-1)")
-    ap.add_argument("--copy", choices=["advocate", "clean"], default="advocate")
+    ap.add_argument("--copy", choices=["advocate", "clean"], default="advocate",
+                    help="advocate: a working draft, bracketed notes allowed; clean: a final draft must carry none")
     ap.add_argument("--stop-at", help="regex: ignore numbering from the first line matching it (e.g. an annexure list)")
     a = ap.parse_args()
     text = open(a.draft, encoding="utf-8").read()
@@ -90,6 +100,8 @@ def main():
     dang = []
     for ln, line in enumerate(lines, 1):
         for m in PARA_REF.finditer(line):
+            if OTHER_DOC.match(line, m.end()):
+                continue  # a paragraph of another document (the written version, the order ...)
             for n in map(int, re.findall(r"\d{1,3}", m.group(1))):
                 if numset and n not in numset:
                     dang.append(f"line {ln}: refers to paragraph {n}, which does not exist")
@@ -99,17 +111,27 @@ def main():
     miss = sorted({m.group(1).lower() for m in PRAYER_REF.finditer(text) if m.group(1).lower() not in labels})
     add("FAIL" if miss else "PASS", "prayer references: " + (f"no lettered item for {miss}" if miss else "ok"))
     # 4. annexures
+    idx = set()
+    if a.annexures:
+        for l in open(a.annexures, encoding="utf-8"):
+            idx.update(ids_from(l))
+    series = {i.split("-")[0] for i in idx} or {"A"}
     refs = []
     for m in ANX_REF.finditer(text):
         refs += ids_from(m.group(1))
+    inline = []
+    for m in INLINE_ANX.finditer(text):
+        inline += [i for i in ids_from(m.group(1)) if i.split("-")[0] in series]
+    refs += inline
     refset = set(refs)
     if a.annexures:
-        idx = set()
-        for l in open(a.annexures, encoding="utf-8"):
-            idx.update(ids_from(l))
-        nr, ni = sorted(refset - idx), sorted(idx - refset)
+        ours = {i for i in refset if i.split("-")[0] in series}
+        other = sorted(refset - ours)
+        nr, ni = sorted(ours - idx), sorted(idx - ours)
         add("FAIL" if nr else "PASS", "annexures cited but not in index: " + (", ".join(nr) if nr else "none"))
         add("FAIL" if ni else "PASS", "annexures indexed but never cited: " + (", ".join(ni) if ni else "none"))
+        if other:
+            add("WARN", "annexures of another party or series not in our index (check each is on the record): " + ", ".join(other))
     else:
         add("WARN", f"annexures: no index file given, cannot cross-check ({len(refset)} distinct cited)")
     byp = defaultdict(list)
@@ -121,6 +143,7 @@ def main():
         add("WARN", "annexure numbering gaps among cited ids: " + ", ".join(sorted(gaps)))
     # 5. cleanliness
     scrub = ANX_REF.sub(" ", text)
+    scrub = INLINE_ANX.sub(lambda m: " " if all(i.split("-")[0] in series for i in ids_from(m.group(1))) else m.group(0), scrub)
     tags = sorted(set(TAGS.findall(scrub)))
     stat = sorted(set(STATUS.findall(text)))
     pers = sorted(set(PERSONA.findall(text)))

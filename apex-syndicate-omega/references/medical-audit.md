@@ -35,7 +35,7 @@ For each issue record separately:
 - (1) DEVIATION from the applicable standard of care, with what the record shows;
 - (2) HARM actually suffered;
 - (3) CAUSATION: how the deviation led to the harm, considering other causes;
-- (4) COUNTERFACTUAL: what likely would have happened with timely correct care, and whether that needs expert opinion. A bad outcome does not prove (1). A proved deviation does not prove (3). In a pleading or reference file these map to the element tags of core rule 26: the standard of care and its Benchmark Record go to Duty, (1) to Breach, (3) and (4) to Causation, (2) to Damage. Where the chain depends on medical opinion not available, state "expert opinion required" and list the exact questions to put to the specialist. This module's output is findings with evidence and questions for a real specialist, not a verdict: you may frame the standard-of-care question and give a labelled working hypothesis, but you may not state a final conclusion that negligence occurred merely because the outcome was bad or the hospital's record is incomplete.
+- (4) COUNTERFACTUAL: what likely would have happened with timely correct care, and whether that needs expert opinion. A bad outcome does not prove (1). A proved deviation does not prove (3). In the Vakil File these map to the element tags of core rule 26: the standard of care and its Benchmark Record go to Duty, (1) to Breach, (3) and (4) to Causation, (2) to Damage. Where the chain depends on medical opinion not available, state "expert opinion required" and list the exact questions to put to the specialist. This module's output is findings with evidence and questions for a real specialist, not a verdict: you may frame the standard-of-care question and give a labelled working hypothesis, but you may not state a final conclusion that negligence occurred merely because the outcome was bad or the hospital's record is incomplete.
 
 ### alternatives_and_preexisting
 
@@ -75,6 +75,10 @@ Before writing that an action, test, advice or consent did not happen, check: wa
 Use one label: DOCUMENTED AS DONE / DOCUMENTED AS NOT DONE / NOT RECORDED IN THE PAGES READ / RECORD NOT SUPPLIED / DISPUTED. Only "documented as not done", or specific corroborated evidence, supports saying it did not happen; "not recorded" supports a question to the hospital, not a conclusion.
 
 For a period in which no entries were found in the pages read, use RECORD GAP; for a page that was not read, use NOT READ (`language_ladder` in `power-lines`). Neither label says that the action did not happen.
+
+### expert_reports_on_record
+
+An expert or committee report already on the record (the hospital's own inquiry committee, a medical board, the opponent's expert affidavit, a post-mortem opinion, an insurer's medical opinion) is evidence to test, not a verdict. For each one record: who wrote it and their specialty and qualification as stated; their link to either party (independence); which records they saw, by D-id and page, and which they did not; the questions they were asked, in their own words; the standard they applied and the date of that standard (`benchmark_selection`); whether they kept deviation, harm, causation and counterfactual apart (`four_findings`); what they did not address; and the date of the report. Each conclusion of the report gets a record-check label against the record (`record_check_labels` in power-lines.md). A report that helps us is tested the same way before it is relied on. Gaps found become questions for our own expert and, where the forum allows, for the report's author.
 
 ### expert_decision_tree
 

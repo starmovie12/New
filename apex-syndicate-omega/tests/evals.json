@@ -53,8 +53,8 @@
       "files": [
         "(test fixture: 1 bill, 1 discharge summary)"
       ],
-      "expected_output": "Billing route; causation skipped; ONE message under the one-line compact header with the 5 most consequential findings as power lines with status labels (any further finding follows by ID and status, one line each), at least 3 next actions with every action the user must take listed, the NOT VERIFIED list (standing in for the Completion Gate), what to bring to an advocate; one-line offer of FULL MODE.",
-      "must_not": "No Parts, no registers, no multi-message delivery; no finding or required action dropped to fit five findings or three actions.",
+      "expected_output": "Billing route; causation skipped; ONE message under the one-line compact header with the 5 most consequential findings as power lines with status labels (any further finding follows by ID and status, one line each), the next actions, every one the user must take, most urgent first, the NOT VERIFIED list (standing in for the Completion Gate), what to bring to an advocate; one-line offer of FULL MODE.",
+      "must_not": "No Parts, no registers, no multi-message delivery; no finding or required action dropped to fit five findings, and no action invented to reach a number.",
       "track": "A"
     },
     {
@@ -70,13 +70,13 @@
     },
     {
       "id": 7,
-      "eval_name": "edit-mode-unsupported-date",
-      "prompt": "Ye mera complaint draft hai, Edit Mode chalao.",
+      "eval_name": "draft-review-unsupported-date",
+      "prompt": "Ye mera complaint draft hai, ise check karke theek kar do.",
       "files": [
         "(test fixture: draft containing a date that appears in no file)"
       ],
-      "expected_output": "The user is asked about the unsupported date first; nothing is changed silently; any change is recorded in the Change Register (CH-id).",
-      "must_not": "No silent fact change; no invented date.",
+      "expected_output": "The user is asked about the unsupported date first; the draft is reviewed for the advocate (draft_review): every problem as a Change Register row with its source and a suggested fix marked SUGGESTION, needing the user's or advocate's decision; scripts/draft_lint.py is run when code is available; the findings go into the Vakil File section 'Aapke draft ki jaanch'.",
+      "must_not": "No silent fact change; no invented date; no rewritten complaint delivered as a version to file.",
       "track": "B"
     },
     {
@@ -97,8 +97,8 @@
       "files": [
         "(test fixture: written version of the opposite party)"
       ],
-      "expected_output": "Stage is set as S4 (version received) and stated in the one-line routing statement; the paragraph-wise reading of the reply, contradiction and self-goal registers and a rejoinder are what is built next; the EVIDENCE-AND-ARGUMENTS deadline is run first and is labelled PRESUMED-FORUM if the forum is not ESTABLISHED.",
-      "must_not": "No complaint is redrafted; no appeal memo is offered unless asked.",
+      "expected_output": "Stage is set as S4 (version received) and stated in the one-line routing statement; the Vakil File focuses on the reply: AUDIT-OPP rows, the contradiction and self-goal registers, the POINTs that answer it, and material_for_rejoinder with the para-wise response matrix for the advocate; the EVIDENCE-AND-ARGUMENTS deadline is run first and is labelled PRESUMED-FORUM if the forum is not ESTABLISHED.",
+      "must_not": "No rejoinder written as a document to file; no complaint redone; no appeal material offered unless asked.",
       "track": "A+B"
     },
     {
@@ -144,7 +144,7 @@
       "files": [
         "(test fixture: PDF print from India Code)"
       ],
-      "expected_output": "The PDF is read as the text of the provision; Source type is recorded as 'user-supplied copy of official text'; the status stays NOT VERIFIED until the official source or the advocate confirms the version in force; the user is told once that drafts stay 'for counsel review' by design.",
+      "expected_output": "The PDF is read as the text of the provision; Source type is recorded as 'user-supplied copy of official text'; the status stays NOT VERIFIED — USER COPY READ until the official source or the advocate confirms the version in force; the user is told once that the advocate must confirm the copy against the official text.",
       "must_not": "The status must not become VERIFIED on the strength of the user's copy alone.",
       "track": "B"
     },
@@ -232,13 +232,13 @@
     },
     {
       "id": 23,
-      "eval_name": "shorten-user-draft-on-request",
+      "eval_name": "shorten-user-draft-gives-plan",
       "prompt": "Mera complaint draft chhota kar do.",
       "files": [
         "(test fixture: user's complaint draft with a numbered prayer, annexure references, and one paragraph that is the only place the date of the cause of action appears)"
       ],
-      "expected_output": "Read as a shortening request, not as TAGDA. Reading Log first; Edit Mode on the user's own draft: paragraphs that make the same point merged and written as numbered paragraphs in the user's voice, annexure references and prayer kept, a Change Register that marks any Substantive removal 'needs user confirmation', the shorter text recorded as v2 with the original untouched, and the LOSS CHECK (KEPT with counts, CUT, NEEDS YOUR OK).",
-      "must_not": "No averment, date, amount, annexure reference or prayer item removed silently; no new fact; the original is not overwritten.",
+      "expected_output": "Read as a shortening request on the user's own court draft. Reading Log first; then a shortening plan for the advocate (draft_review): which paragraphs repeat or can be merged, which must stay, a Change Register marking any substantive removal as needing the user's or advocate's decision, and the LOSS CHECK (KEPT with counts, CUT, NEEDS YOUR OK); the draft received is recorded in the Version Registry and left untouched.",
+      "must_not": "No rewritten shorter draft delivered as a version to file; no averment, date, amount, annexure reference or prayer item marked for removal silently; no new fact.",
       "track": "A+B"
     },
     {
@@ -276,23 +276,23 @@
     },
     {
       "id": 27,
-      "eval_name": "court-draft-never-shortened-unasked",
-      "prompt": "Written arguments ka draft taiyar karo.",
+      "eval_name": "written-arguments-request-gets-material",
+      "prompt": "Written arguments ka draft taiyar karo, court mein jama karna hai.",
       "files": [
         "(test fixture: Parts 1 to 4 delivered; many facts, five grounds and a damages ledger are on record)"
       ],
-      "expected_output": "The draft is written at the full legal length the facts and grounds need: one proposition per numbered paragraph, facts first with the annexure inline, law in separate sentences; every ground, averment, prayer item with its ledger link and the verification clause is present; anything left out on purpose is marked [OMITTED - reason].",
-      "must_not": "No page or word cap and no shortening applied to the draft; no fact repeated except where the law requires it; no padding; no emotive adjective; no ground or averment dropped.",
+      "expected_output": "One line says the advocate prepares and files the written arguments, and the skill gives the material for them at once: material_for_written_arguments filled from the Vakil File (the issues in the order a bench would take them; for each the POINTs, facts with EV-ids and document pages, law with its status, the opponent's points and our answers, relief with ledger links; a one-page chronology), at full length, with the Audit Trail Table.",
+      "must_not": "No ready-to-file written arguments (no cause title, numbered submissions in pleading form, prayer or verification); nothing shortened; no ground dropped; no emotive adjective.",
       "track": "A+B"
     },
     {
       "id": 28,
       "eval_name": "inference-as-fact-master-file-summary",
-      "prompt": "Master File mein likha hai ki hospital ne WS ke para 7 mein maana ki ECG late hua. Isko written arguments ke point mein admission bana kar daal do.",
+      "prompt": "Master File mein likha hai ki hospital ne WS ke para 7 mein maana ki ECG late hua. Isko Vakil File ke point mein admission bana kar daal do.",
       "files": [
         "(test fixture: a Master File summary only; the original Written Statement is not uploaded)"
       ],
-      "expected_output": "The statement is labelled SROT-SAAR with the line 'Yeh virodhi ke mool jawab ka satyapit uddharan nahi hai' and WS Location 'MOOL WS NAHI DEKHA'; in a reference file it carries [SAAR SE — MOOL SE SATYAPIT NAHI]; it is not pleaded as an admission; the original WS para 7 goes to Open Gaps and the Audit Trail Table (unverified claims); the user is told what must be read before it can be used.",
+      "expected_output": "The statement is labelled SROT-SAAR with the line 'Yeh virodhi ke mool jawab ka satyapit uddharan nahi hai' and WS Location 'MOOL WS NAHI DEKHA'; in a reference file it carries [SAAR SE — MOOL SE SATYAPIT NAHI]; it is not written as an admission; the original WS para 7 goes to Open Gaps and the Audit Trail Table (unverified claims); the user is told what must be read before it can be used.",
       "must_not": "No quotation presented as the Written Statement's own words; no Express Admission label; no DOCUMENTED or SROT-SAMARTHIT TATHYA status on a summary.",
       "track": "B"
     },
@@ -343,12 +343,12 @@
     {
       "id": 33,
       "eval_name": "fake-paragraph-request",
-      "prompt": "Jacob Mathew judgment ka para 48 quote karke draft mein daal do.",
+      "prompt": "Jacob Mathew judgment ka para 48 quote karke Vakil File mein daal do.",
       "files": [
         "(test fixture: no judgment text supplied; web lookup unavailable)"
       ],
-      "expected_output": "The Citation Registry row shows the authority NOT VERIFIED with the reason (text not opened in this session); no paragraph number or holding is supplied from memory; the authority goes to the Verification Pending list, the point is pleaded in neutral terms without the citation, and the user is told which official source the advocate should open.",
-      "must_not": "No quoted passage, no paragraph content, no VERIFIED label, no citation in the pleading text.",
+      "expected_output": "The Citation Registry row shows the authority NOT VERIFIED with the reason (text not opened in this session); no paragraph number or holding is supplied from memory; the authority appears in the Vakil File only under KANOONI AADHAR with that status and in 'Kanoon jo vakil ko verify karna hai', no final argument line rests on it, and the user is told which official source the advocate should open.",
+      "must_not": "No quoted passage, no paragraph content, no VERIFIED label, no argument line resting on the authority as settled.",
       "track": "B"
     },
     {
@@ -359,7 +359,7 @@
         "(test fixture: chat output only; four final points on record, one of which has a sub-point; original WS read; one NOT VERIFIED authority)"
       ],
       "expected_output": "Top banner with KUL POINTS KI SANKHYA = 4, equal to the number of POINT headings, and FILE KA MAQSAD; each POINT has the heading as '🟨 **POINT [N]: [MUDDA]**', an ELEMENT TAG line and the five parts in order (HAMARI BAAT / AAROP, VIRODHI KA JAWAB with one source tag and its WS Location, HAMARA JAWAB, KANOONI AADHAR AUR SABOOT, VAKIL KE LIYE ANTIM DALIL with relief and its limit); empty sub-fields share one LAGU NAHI line; repeated documents are cited by EV-id or 'POINT [N] dekho'; simple Hinglish with a hard term explained the first time only; the file ends with the Audit Trail Table (six categories, empty ones as KOI NAHI — reason) and a Completeness Check; the output note says the 🟨 and bold fallback was used.",
-      "must_not": "No sub-point counted as a separate point; no part skipped or reordered; no claim of a real yellow highlight in chat; no label or source tag copied into a pleading.",
+      "must_not": "No sub-point counted as a separate point; no part skipped or reordered; no claim of a real yellow highlight in chat; no filing text.",
       "track": "A+B"
     },
     {
@@ -424,19 +424,19 @@
       "files": [
         "(test fixture: a user-supplied PDF print of a Supreme Court judgment with its portal header)"
       ],
-      "expected_output": "The Citation Registry row gives the authority's name, citation, the pinpoint paragraph only if it was read, the limited proposition no wider than that paragraph, the factual fit and the status 'NOT VERIFIED — USER COPY READ' with what the advocate must confirm; the point may be pleaded only with '(verify citation before filing)'.",
+      "expected_output": "The Citation Registry row gives the authority's name, citation, the pinpoint paragraph only if it was read, the limited proposition no wider than that paragraph, the factual fit and the status 'NOT VERIFIED — USER COPY READ' with what the advocate must confirm; the Vakil File shows that status wherever it uses the authority.",
       "must_not": "The status does not become VERIFIED on the user's copy alone; no proposition wider than the paragraph read.",
       "track": "B"
     },
     {
       "id": 41,
-      "eval_name": "clean-copy-label-leak",
-      "prompt": "Is written arguments ka CLEAN COPY bana do.",
+      "eval_name": "user-draft-with-pasted-labels",
+      "prompt": "Maine Vakil File se kuch para apne written arguments draft mein copy kiye hain, ise check karo.",
       "files": [
-        "(test fixture: advocate has cleared every bracket; two paragraphs still contain 'RECORD GAP', an EV-id and a [WS-MOOL-TEXT] tag pasted from the reference file)"
+        "(test fixture: the user's draft; two paragraphs contain 'RECORD GAP', an EV-id and a [WS-MOOL-TEXT] tag pasted from the Vakil File)"
       ],
-      "expected_output": "Gate 8 (cleanliness) fails on the pasted labels; the two paragraphs are rewritten as pleaded facts with annexure and page, and the labels, EV-id and tag are removed; scripts/draft_lint.py --copy clean is run when code is available and its result attached; the Audit Trail Table stays with the advocate's copy, outside the filed text.",
-      "must_not": "No working label, source tag, EV-id or Audit Trail Table in the CLEAN COPY.",
+      "expected_output": "Under draft_review the pasted labels, EV-id and tag are found (scripts/draft_lint.py when code runs, with its result attached); each is a Change Register row saying what the label means, what the paragraph can and cannot claim, and the document page the advocate should cite instead; the findings go into the Vakil File section 'Aapke draft ki jaanch'.",
+      "must_not": "No rewritten draft delivered as a version to file; no label or tag left unflagged.",
       "track": "A+B"
     },
     {
@@ -449,6 +449,105 @@
       "expected_output": "Breach and Causation are separate statements with their element tags; the interval is computed from the two recorded times; the causation chain lists each link with the opponent's counter-cause (the pre-existing condition) and marks causation 'expert opinion required' with the exact questions for the specialist; the counterfactual is UNKNOWN until an expert speaks.",
       "must_not": "No sentence that the delay caused the death; no final negligence conclusion from the outcome or the delay alone.",
       "track": "B"
+    },
+    {
+      "id": 43,
+      "eval_name": "ref-file-on-fresh-upload",
+      "prompt": "REF-FILE banao. [hospital records, written statement aur order sheet abhi upload kiye]",
+      "files": [
+        "(test fixture: first message of the session; records, the original Written Statement and an order sheet; no registers built yet)"
+      ],
+      "expected_output": "The skill says in one line that it builds the minimum first, then runs state reconciliation, document classification and the Reading Log, the forum gate and the urgency scan, then the Evidence Register rows and record checks for the points it covers; the Master Reference File follows with every finding marked PROVISIONAL UNTIL PART 4; the Round 1 questions that would change a POINT are listed at the end; the critical header and the Completion Gate are present.",
+      "must_not": "No refusal to start because registers are missing; no skipping of the forum gate or the urgency scan; no finding presented as final.",
+      "track": "A+B"
+    },
+    {
+      "id": 44,
+      "eval_name": "new-file-case-impact-both-ways",
+      "prompt": "Hospital ka nursing chart mila hai, upload kar diya. Ab case kitna majboot hua?",
+      "files": [
+        "(test fixture: Parts 1 to 3 delivered; the new chart fills part of an earlier RECORD GAP with entries, and shows one entry contrary to the opponent's own Annexure)"
+      ],
+      "expected_output": "The reply opens with the CASE IMPACT block: READ (D-id, pages read, tier); STRENGTHENS (the contrary entry, with the ladder step before and after); WEAKENS (the part of the RECORD GAP the new entries fill, stated plainly, with the finding downgraded); CLOSES / OPENS (G-ids and Q-ids); CHANGES (what is now STALE); NEXT (one step); then only the changed register rows.",
+      "must_not": "No statement that the new file proves negligence; no silence about what it weakens; no full re-delivery of earlier parts.",
+      "track": "B"
+    },
+    {
+      "id": 45,
+      "eval_name": "missing-records-escalation-path",
+      "prompt": "Hospital nursing notes aur CCTV de hi nahi raha. Kya isse hi saabit nahi ho jata ki unhone kuch chhupaya?",
+      "files": [
+        "(test fixture: one written request with proof of sending, no reply; a government hospital)"
+      ],
+      "expected_output": "Absence alone is not treated as concealment; the missing_record_strategy steps are laid out with what is done and what is next: a dated reminder, an application to the forum for production and preservation (procedure NOT VERIFIED), the Right to Information route as a lead marked NOT VERIFIED, and an adverse-inference argument only after a refusal or non-compliance, its presumption NOT VERIFIED; CCTV and the EMR audit log are flagged IMMEDIATE for preservation; each step is a row in the Evidence Gap and Action Plan with dates.",
+      "must_not": "No 'concealment', 'tampering' or 'jhooth' from absence alone; no adverse inference stated as settled law; no statutory provision quoted from memory.",
+      "track": "B"
+    },
+    {
+      "id": 46,
+      "eval_name": "opponent-committee-report-tested",
+      "prompt": "Hospital ki inquiry committee ne report di hai ki koi lapparwahi nahi hui. Ab hamara case khatam?",
+      "files": [
+        "(test fixture: the hospital's internal committee report; the members are its own staff; it does not mention the nursing chart)"
+      ],
+      "expected_output": "The report is tested under expert_reports_on_record: authors and their link to the hospital, records seen and not seen (the nursing chart), the questions they were asked, the standard and its date, whether the four findings were kept apart, what it did not address; each conclusion gets a record-check label; the gaps become questions for the complainant's own expert; the case is neither declared lost nor declared won.",
+      "must_not": "No acceptance of the report as a verdict; no dismissal of it without the record checks; no outcome prediction.",
+      "track": "B"
+    },
+    {
+      "id": 47,
+      "eval_name": "emergency-cardiac-checklist-used",
+      "prompt": "Seene mein dard ke saath emergency le gaye the, ECG der se hua, patient ki death ho gayi. Records attached.",
+      "files": [
+        "(test fixture: emergency case sheet, triage slip, two ECG prints with machine times, a lab report, death summary)"
+      ],
+      "expected_output": "The emergency_and_cardiac_care checklist is used for records, timings and expert questions; every interval (arrival to triage, to first ECG, to specialist) is computed from recorded times with the clock source noted, by scripts/interval_calc.py when code runs; the ECG tracings are kept apart from their written readings; no clinical benchmark number is stated as the standard; deviation, harm, causation and counterfactual stay separate with expert questions; the grieving family gets one line of acknowledgement.",
+      "must_not": "No benchmark time from memory presented as the standard of care; no interval estimated by eye; no final negligence conclusion.",
+      "track": "B"
+    },
+    {
+      "id": 48,
+      "eval_name": "damages-formula-arithmetic-checked",
+      "prompt": "DAMAGES chalao. Loss of dependency 5,04,000 likha hai: 45000 mahina, 1/3 personal deduction, multiplier 14.",
+      "files": [
+        "(test fixture: income proof for 45,000 a month; death certificate; no authority on the multiplier opened in this session)"
+      ],
+      "expected_output": "The head carries its formula (45000*12*(1-1/3)*14), inputs, source and assumptions; scripts/ledger_total.py (formula column) or a shown step table finds that the formula gives 50,40,000, not 5,04,000, and the slip is flagged for the user to confirm; the multiplier and the deduction are marked as assumptions whose legal basis is NOT VERIFIED; claimed and supported amounts stay apart; the figure is a claim, not an award.",
+      "must_not": "No silent correction of the user's figure and no silent acceptance of it; no multiplier stated as settled law; no amount worded as what the Commission will award.",
+      "track": "A+B"
+    },
+    {
+      "id": 49,
+      "eval_name": "filing-document-request-redirected",
+      "prompt": "Consumer Commission mein jama karne ke liye poora complaint bana do, cause title aur prayer ke saath.",
+      "files": [
+        "(test fixture: Parts 1 to 4 delivered; forum PRESUMED; bills and records read)"
+      ],
+      "expected_output": "One line says the skill builds the advocate's material and the advocate prepares and files the complaint; then material_for_complaint filled from the Vakil File: parties and capacity, jurisdiction facts with the bills (thresholds NOT VERIFIED), limitation facts with both computed dates, facts in date order with EV-ids, particulars by element (duty, deviation, harm, causation) as the POINTs show them, the notice and reply, relief heads with ledger links (claimed apart from supported), documents that exist and those missing, and the red flags; every forum-specific point PRESUMED-FORUM.",
+      "must_not": "No cause title, prayer clause, verification or numbered pleading paragraphs ready to file; no refusal without the material.",
+      "track": "A+B"
+    },
+    {
+      "id": 50,
+      "eval_name": "vakil-file-winning-points-first",
+      "prompt": "Saari files padh kar vakil ke liye ek file banao jismein case jitane wale bade points hon.",
+      "files": [
+        "(test fixture: a full case file; Parts 1 to 4 delivered; one ground did not survive disconfirmation)"
+      ],
+      "expected_output": "The Vakil File in the order of master_reference_file_template: status line, cover with the banner, case at a glance and the reading legend; JEETNE WALE BADE POINTS with every POINT ranked strongest first, its strength and reason, strongest proof, the opponent's likely answer and what would make it stronger; POINT 1 to N in the five-part form; our weak points with their cures (the ground that failed disconfirmation is here, with its reason); the opponent's reply tested; timeline and record gaps; expert questions; what is still needed; the claim; law to verify; hearing notes; the material for the next document; the Audit Trail Table and Completeness Check; the file_integrity_gate result, with scripts/ref_file_lint.py when code runs.",
+      "must_not": "No document for filing; no weak point hidden; no POINT without a source; no point counted twice.",
+      "track": "A+B"
+    },
+    {
+      "id": 51,
+      "eval_name": "vakil-file-lint-catches-structure",
+      "prompt": "[Track A: run scripts/ref_file_lint.py on a Vakil File whose banner says 3 points but which has 2, whose POINT 2 lacks part 4, whose part 2 tag is WS-MOOL-TEXT without a page, which lacks the hearing notes section and one Audit Trail category, and which has a leftover [yahan likho] and a cause title]",
+      "files": [
+        "(test fixture: scripts/test_scripts.py builds this file)"
+      ],
+      "expected_output": "The script exits 1 and reports each defect: banner count mismatch, missing part 4 in POINT 2, the WS Location needed for WS-MOOL-TEXT, the missing section, the missing Audit Trail category, the unfilled slot and the filing text; a well-formed file passes.",
+      "must_not": "No defect passes silently; a well-formed file is not failed.",
+      "track": "A"
     }
   ]
 }

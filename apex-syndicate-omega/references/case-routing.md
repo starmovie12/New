@@ -24,17 +24,17 @@ Do not apply every module equally to every case. After intake set one primary ca
 
 ## stage_router
 
-After the forum gate, set the STAGE of each proceeding (it can differ by PR-id) and say it in the one-line routing statement. The case type decides which modules run; the stage decides what to build now. If the stage is not shown by the files, ask once and label it PRESUMED until a paper shows it. If the user asks for something out of stage, build it and say in one line what the stage suggests first.
+After the forum gate, set the STAGE of each proceeding (it can differ by PR-id) and say it in the one-line routing statement. The case type decides which modules run; the stage decides what to build now. If the stage is not shown by the files, ask once and label it PRESUMED until a paper shows it. If the user asks for material out of stage, give it and say in one line what the stage suggests first.
 
-| Stage | Build now | Template | Deadline type to run first |
+| Stage | What the Vakil File focuses on now | Advocate material (section 13) | Deadline type to run first |
 |---|---|---|---|
-| S1 Before any filing (records being collected) | records and preservation request, evidence list, decision on a legal notice | records_preservation_template, legal_notice_template | PRESERVATION, FILING |
-| S2 Legal notice sent, no reply yet | reply tracking, complaint readiness, limitation re-check | complaint_template | FILING |
+| S1 Before any filing (records being collected) | records still needed and their preservation, the evidence list, whether a legal notice is worth sending | material_for_records_request, material_for_legal_notice | PRESERVATION, FILING |
+| S2 Legal notice sent, no reply yet | reply tracking, the points a complaint would carry, limitation re-check | material_for_complaint | FILING |
 | S3 Complaint filed, opposite party's version awaited | service and appearance check, interim applications if needed, evidence plan | none yet | REPLY, HEARING |
-| S4 Version or reply received | paragraph-wise reading of the reply (AUDIT-OPP: documentary_contradiction_audit), contradiction and self-goal registers, rejoinder | rejoinder_template | EVIDENCE-AND-ARGUMENTS |
-| S5 Evidence | evidence affidavit, document list and annexure index, decision on expert evidence | evidence_affidavit_template | EVIDENCE-AND-ARGUMENTS |
-| S6 Arguments | Master Reference File for the advocate (REF-FILE), written arguments and hearing kit | master_reference_file_template, written_arguments_template | EVIDENCE-AND-ARGUMENTS, HEARING |
-| S7 Order passed | read the order against the record, options of appeal, review or revision, compliance and any deposit | appeal_memo_template, condonation_application_template | APPEAL, COMPLIANCE |
+| S4 Version or reply received | paragraph-wise reading of the reply (AUDIT-OPP: documentary_contradiction_audit), contradiction and self-goal registers, the points that answer it | material_for_rejoinder | EVIDENCE-AND-ARGUMENTS |
+| S5 Evidence | the facts each witness can prove, the document list and annexure index, the decision on expert evidence | material_for_evidence_affidavit | EVIDENCE-AND-ARGUMENTS |
+| S6 Arguments | the full Vakil File with hearing notes (REF-FILE) | material_for_written_arguments | EVIDENCE-AND-ARGUMENTS, HEARING |
+| S7 Order passed | the order read against the record, the options of appeal, review or revision, compliance and any deposit | material_for_appeal, material_for_condonation | APPEAL, COMPLIANCE |
 
 ## side_and_scope
 

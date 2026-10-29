@@ -66,6 +66,8 @@ Classify any missing record as exactly one of: NOT SUPPLIED (not yet requested o
 
 Absence of an entry is weak evidence that something did not happen; say so. A bill charge is not proof the service was given; no bill entry is not proof it was not given. Compare billing, clinical notes, lab logs and pharmacy records independently.
 
+A record that the hospital holds and has not produced is turned into a documented request and, where it stays unproduced, into a documented refusal or non-compliance, step by step (`missing_record_strategy` in strategy-and-vakil-file.md). That is how an absence legitimately moves up the language ladder; an inference from absence alone never does.
+
 ### digital_evidence_and_custody
 
 For screenshots, chats, exported PDFs and messages record: source device, acquisition method, whether the original file or export is held, transfer history, and integrity checks possible. Do not treat a screenshot or export as the equal of the original. For metadata, EMR audit trails or hospital logs, analyze only what is actually supplied; otherwise write "requested / not supplied".
@@ -119,7 +121,20 @@ Before asking anything, check the Question Register, the Master Fact Sheet and t
 
 ### version_registry
 
-Keep a Version Registry for every document, draft and deliverable: VR-id | Item (D-id or draft name) | Version | Date received or created | Supersedes | What changed | Facts, analyses and draft paragraphs that relied on the old version. When a new or corrected file arrives (UPDATE): record it; mark the old version SUPERSEDED (never delete it); compare the two where possible; mark everything that relied on the old version STALE until re-checked; re-run only the affected checks; show only the changes. Never merge two versions into one silently. Where the user's copy and the hospital's copy of a record both exist, keep both under separate IDs.
+Keep a Version Registry for every document, user's draft and Vakil File: VR-id | Item (D-id, draft name or Vakil File) | Version | Date received or created | Supersedes | What changed | Facts, analyses and POINTs that relied on the old version. When a new or corrected file arrives (UPDATE): record it; mark the old version SUPERSEDED (never delete it); compare the two where possible; mark everything that relied on the old version STALE until re-checked; re-run only the affected checks; show only the changes. Never merge two versions into one silently. Where the user's copy and the hospital's copy of a record both exist, keep both under separate IDs.
+
+### case_impact
+
+Every UPDATE (a new file, a revised draft or a new answer that changes a fact) opens with a CASE IMPACT block, so the user sees at once what the new material does for the case. One line per item, each with its EV-id or D-id and page:
+
+- READ: the new D-id, its kind, pages read out of pages received (Reading Log), and its tier (`source_hierarchy` in legal-research.md).
+- STRENGTHENS: each finding or POINT it supports, with the ladder step before and after (`language_ladder` in power-lines.md), for example "RECORD GAP (step 2) → contrary to the opponent's own Annexure (step 3)".
+- WEAKENS: each finding or POINT it contradicts or explains away (an entry that fills a RECORD GAP, a consent form, an innocent explanation), with what that changes; said as plainly as a strengthening.
+- CLOSES / OPENS: the G-ids and Q-ids it settles, and the new gaps or questions it raises.
+- CHANGES: any date, amount, deadline, forum point or expert question it alters, and what is now STALE.
+- NEXT: the one step that makes the most of it (a records request, a new or stronger POINT, an expert question, a line for the advocate's next document).
+
+A new document raises a point only as far as its source label and tier allow: a summary or a typed copy is never treated as the original, and "this proves negligence" is never the impact of a single record. "LAGU NAHI — [reason]" where a line has nothing.
 
 ### contradiction_resolution
 
@@ -148,4 +163,4 @@ The item-level index that a Master Reference File, an Audit Trail Table and the 
 | Supports | The F-ids and the issue or POINT it supports, with its element tag (core rule 26) |
 | Limitation | What this item does NOT prove (for example "shows the entry, not that the test was done at that time") |
 
-Rules: a page or paragraph is entered only if the Reading Log shows it as READ; otherwise the location is SATIK SROT-STHAN SATYAPIT NAHI. One item used for two points keeps one EV-id and is cited, not copied. An EV-id is internal and is never printed in a pleading; the pleading cites the annexure and page (`draft_writing_rules` in power-lines.md).
+Rules: a page or paragraph is entered only if the Reading Log shows it as READ; otherwise the location is SATIK SROT-STHAN SATYAPIT NAHI. One item used for two points keeps one EV-id and is cited, not copied. Beside each EV-id the Vakil File also gives the document and page (or annexure mark) as they appear in the court record, so the advocate can go straight to it (`argument_writing_rules` in power-lines.md).

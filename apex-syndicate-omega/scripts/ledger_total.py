@@ -13,10 +13,16 @@ listed. When rows carry a scenario (Kam, Base, Zyada), a row with no scenario co
 scenario and a row with a scenario only in its own; no single total is printed across scenarios,
 and --claimed then needs --scenario.
 
+A "formula" column (plain arithmetic: numbers, + - * / and brackets; "x" or "×" for times, "9%" for
+9/100, commas inside numbers allowed) is computed and compared with the claimed amount, so a
+multiplier or interest head cannot carry an arithmetic slip. A difference under one rupee is
+reported as rounding; anything more is flagged. Text that is not plain arithmetic is noted as not
+machine-checked.
+
   ledger_total.py ledger.csv --claimed 1250000
   ledger_total.py ledger.csv --claimed 1250000 --scenario Base
 """
-import argparse, csv, json, re, sys
+import argparse, ast, csv, json, operator, re, sys
 from collections import OrderedDict, defaultdict
 from decimal import Decimal, InvalidOperation
 
@@ -30,7 +36,9 @@ ALIASES = {
     "period": {"period"},
     "proof": {"proof", "proof status", "proof_status"},
     "double": {"double-count", "double count", "double_count", "double-count check", "double"},
+    "formula": {"formula", "calculation", "calc"},
 }
+OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul, ast.Div: operator.truediv}
 NO_SUPPORT = {"", "-", "support nahi", "none", "nil", "no proof"}
 
 
@@ -49,6 +57,33 @@ def money(s):
     if t == "":
         raise InvalidOperation
     return Decimal(t)
+
+
+def formula_value(expr):
+    """Evaluate plain arithmetic with Decimal; raise ValueError for anything else."""
+    e = str(expr).strip()
+    if not e or len(e) > 300:
+        raise ValueError("empty or too long")
+    e = re.sub(r"(?i)(rs\.?|inr|₹)", "", e).replace("×", "*").replace("÷", "/")
+    e = re.sub(r"(?<=\d),(?=\d)", "", e)
+    e = re.sub(r"(\d+(?:\.\d+)?)\s*%", r"(\1/100)", e)
+    e = re.sub(r"(?<=[\d)])\s*[xX]\s*(?=[\d(])", "*", e)
+
+    def ev(n):
+        if isinstance(n, ast.Expression):
+            return ev(n.body)
+        if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)) and not isinstance(n.value, bool):
+            return Decimal(str(n.value))
+        if isinstance(n, ast.BinOp) and type(n.op) in OPS:
+            return OPS[type(n.op)](ev(n.left), ev(n.right))
+        if isinstance(n, ast.UnaryOp) and isinstance(n.op, (ast.USub, ast.UAdd)):
+            v = ev(n.operand)
+            return -v if isinstance(n.op, ast.USub) else v
+        raise ValueError("not plain arithmetic")
+    try:
+        return ev(ast.parse(e, mode="eval"))
+    except (SyntaxError, ZeroDivisionError, InvalidOperation, ArithmeticError) as err:
+        raise ValueError(str(err) or "cannot compute")
 
 
 def inr(d):
@@ -78,7 +113,7 @@ def main():
     rows = load(a.file)
     if not rows:
         sys.exit("error: no rows found")
-    problems, notes, counted, excluded = [], [], [], []
+    problems, notes, counted, excluded, formula_lines = [], [], [], [], []
     has_supported = any("supported" in r for r in rows)
     for i, r in enumerate(rows, 1):
         rid = r.get("id") or f"row{i}"
@@ -103,6 +138,22 @@ def main():
                     sup = Decimal(0)
                 if sup > amt:
                     problems.append(f"{rid}: supported amount {sup} is more than the amount claimed {amt}")
+        fx = (r.get("formula", "") or "").strip()
+        if fx:
+            try:
+                val = formula_value(fx)
+            except ValueError:
+                notes.append(f"{rid}: formula '{fx}' is not plain arithmetic, not machine-checked (write it like 45000*12*14)")
+            else:
+                val = val.quantize(Decimal("0.01"))
+                diff = (amt - val).copy_abs()
+                if diff == 0:
+                    formula_lines.append(f"{rid}: {fx} = {inr(val)} — MATCH")
+                elif diff < 1:
+                    formula_lines.append(f"{rid}: {fx} = {inr(val)} — amount {inr(amt)} is this figure rounded")
+                else:
+                    formula_lines.append(f"{rid}: {fx} = {inr(val)} — MISMATCH with amount {inr(amt)}")
+                    problems.append(f"{rid}: amount {inr(amt)} does not equal its formula ({inr(val)})")
         dbl = (r.get("double", "") or "").strip().upper() in {"Y", "YES", "TRUE"}
         rec = {"id": rid, "head": (r.get("head") or "(no head)").strip(), "amount": amt, "supported": sup,
                "scenario": (r.get("scenario") or "").strip(),
@@ -124,6 +175,10 @@ def main():
     print(f"Rows: {len(rows)} | counted {len(counted)} | excluded as double-count {len(excluded)}")
     for rec in excluded:
         print(f"  excluded {rec['id']} ({rec['head']}): {inr(rec['amount'])}")
+    if formula_lines:
+        print("Formula check:")
+        for x in formula_lines:
+            print("  " + x)
     status = 0
     if scenarios:
         print("Scenarios: " + ", ".join(scenarios) + " (a row with no scenario counts in every scenario)")
